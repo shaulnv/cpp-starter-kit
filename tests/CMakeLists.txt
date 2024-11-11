@@ -4,6 +4,7 @@ find_package(doctest REQUIRED)
 add_executable(starterkit-tests)
 target_sources(starterkit-tests PRIVATE ./src/main-tests.cpp ./src/starterkit-test.cpp)
 target_link_libraries(starterkit-tests doctest::doctest starterkit::starterkit)
+install_compile_commands_json(starterkit-tests)
 install(TARGETS starterkit-tests RUNTIME DESTINATION tests)
 
 include(doctest)
