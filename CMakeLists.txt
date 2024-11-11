@@ -11,12 +11,14 @@ project(
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
 option(CTEST_OUTPUT_ON_FAILURE "On test failure, print out its full output" ON)
+option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 
 # cmake modules
 include(CTest)
 include(cmake/CPM.cmake)
-include(cmake/tools.cmake)
 include(cmake/PreventInSourceBuilds.cmake)
+include(cmake/tools.cmake)
+include(cmake/helpers.cmake)
 
 # deps
 # use CPM for import of internal cmake based projects
