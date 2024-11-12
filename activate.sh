@@ -84,5 +84,11 @@ if [[ ! -n "$VIRTUAL_ENV" ]]; then
     source $venv_dir/bin/activate
 fi
 
+# cache 3rd parties CMake projects, imported by CPM
+# you can set this env var in your .bashrc to a more persistant place like $HOME/.cache/CPM
+if [[ ! -n "$CPM_SOURCE_CACHE" ]]; then
+    export CPM_SOURCE_CACHE=$root_dir/.cache/CPM
+fi
+
 [ ! -n "$quiet" ] && echo "Virtual Env was loaded"
 [ ! -n "$quiet" ] && usage
