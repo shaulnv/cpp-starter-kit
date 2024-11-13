@@ -1,16 +1,59 @@
----
-  BasedOnStyle: Google
-  AccessModifierOffset: '-2'
-  AlignTrailingComments: 'true'
-  AllowAllParametersOfDeclarationOnNextLine: 'false'
-  AlwaysBreakTemplateDeclarations: 'No'
-  BreakBeforeBraces: Attach
-  ColumnLimit: '100'
-  ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
-  IncludeBlocks: Regroup
-  IndentPPDirectives: AfterHash
-  IndentWidth: '2'
-  NamespaceIndentation: All
-  BreakBeforeBinaryOperators: All
-  BreakBeforeTernaryOperators: 'true'
-...
+# options: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+Standard: Cpp11
+
+# use spaces instead of tabs
+UseTab: Never
+IndentWidth: 4
+
+ColumnLimit: 140
+
+BasedOnStyle: Chromium
+
+# each argument or parameter will have its own line if they can't all fit in one line
+BinPackArguments: false
+BinPackParameters: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# break line after: enum, class, struct, case, namespace, union, lambda and multiline control statement (if/for/while/switch/etc)
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: true
+  AfterClass: true
+  AfterStruct: true
+  AfterCaseLabel: true
+  AfterNamespace: true
+  AfterUnion: true
+  BeforeLambdaBody: true
+  AfterFunction: true
+  BeforeCatch: false
+  SplitEmptyFunction: false
+  AfterControlStatement: MultiLine
+
+# does (int)x instead of (int) x
+SpaceAfterCStyleCast: false
+
+# align multi line comments to start on the same line
+AlignTrailingComments: true
+
+SpacesBeforeTrailingComments: 3
+
+
+#  #define SHORT_NAME       42
+#  #define LONGER_NAME      0x007f   # does nice spacing for macros
+AlignConsecutiveMacros: Consecutive
+
+# allow "enum { A, B } myEnum;"
+AllowShortEnumsOnASingleLine: true
+
+# 'if (x)' and not 'if ( x )'
+SpacesInConditionalStatement: false
+
+# "void Foo(Bar)" instead of "void Foo( Bar )"
+SpacesInParentheses: false
+
+# use one line for long string if possible
+BreakStringLiterals: false
+
+# multiline strings will not start in a new line
+AlwaysBreakBeforeMultilineStrings: false

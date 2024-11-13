@@ -17,7 +17,7 @@ update_env_file() {
 }
 
 conan_build() {
-  conan build . --build=missing -pr:a ./env/profiles/cpp20.profile $@
+  conan build . --build=missing -pr:a ./env/profiles/cpp.profile $@
 }
 
 # activate python's virtual env

@@ -7,11 +7,27 @@ project(
   HOMEPAGE_URL "https://github.com/shaulnv/cpp-starter-kit"
   LANGUAGES CXX C)
 
+# Set the C++ standard (e.g., C++17)
+set(CMAKE_CXX_STANDARD 17)
+
+# Ensure that the compiler strictly requires the specified standard
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Disable compiler-specific extensions (e.g., GNU extensions)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 # project options
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
 option(CTEST_OUTPUT_ON_FAILURE "On test failure, print out its full output" ON)
 option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
+option(CMAKE_VERBOSE_MAKEFILE "Use to increase verbosity" ON)
+
+add_compile_options(-Wall -Wformat -Werror=format-security -Werror)
 
 # cmake modules
 include(CTest)
