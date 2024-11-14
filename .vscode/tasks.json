@@ -15,6 +15,49 @@
 			},
 			"problemMatcher": [],
 			"detail": "CMake template build task"
-		}
-	]
+		},
+        {
+            "label": "rebase_master",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/rebase_master.sh ${workspaceFolder}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "pull_master",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/pull_master.sh ${workspaceFolder}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "create_upstream",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/create_upstream.sh ${workspaceFolder}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "checkout_pr",
+            "type": "shell",
+            "command": "${workspaceFolder}/scripts/checkout_pr.sh ${workspaceFolder} ${input:pr_number}",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "pr_number",
+            "description": "PR Number:",
+            "type": "promptString"
+        },
+    ]
 }
