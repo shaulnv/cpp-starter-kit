@@ -47,3 +47,24 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 2. Run `./build.sh` once to generate the CMake build folder.
 3. Press `F7` to build the project or use the `CMake: Run Tests` command from the Command Palette.
 
+## Small Features
+
+1. [**`direnv` Support**](https://direnv.net/): The repository includes a `.envrc` file for `direnv` integration.  
+   To enable it:
+   1. Install `direnv`:  
+
+      ```bash
+      apt install direnv
+      ```
+
+   2. Add the hook to your `.bashrc` file:  
+
+      ```bash
+      # Enable direnv (place after rvm, git-prompt, or similar extensions)
+      eval "$(direnv hook bash)"  
+      export DIRENV_LOG_FORMAT=""  # Suppress direnv output
+      ```
+
+   3. Run `direnv allow /path/to/project` once, to enable `direnv`.
+
+   Now, upon navigating to `starterkit` (`cd starterkit`), the virtual environment will be activated automatically, making all tools in the venv available seamlessly.
