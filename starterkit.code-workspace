@@ -55,6 +55,7 @@
 			"matepek.vscode-catch2-test-adapter",
 			"twxs.cmake",
 			"josetr.cmake-language-support-vscode",
+			"sirmspencer.vscode-autohide"
 		]
 	}
 }
