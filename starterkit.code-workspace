@@ -56,6 +56,7 @@
 			"twxs.cmake",
 			"ms-vscode.cmake-tools",
 			"josetr.cmake-language-support-vscode",
+			"sirmspencer.vscode-autohide"
 		]
 	}
 }
