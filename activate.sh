@@ -4,7 +4,7 @@
 # after script runs to complete, see usage()
 #
 
-_usage() {
+activate_usage() {
     echo "Usage:"
     echo "  all your dev env tools are in the path (cmake, conan, etc.)."
     echo "  if you need to call 'sudo ...' use 'venv-sudo ...' instead."
@@ -91,5 +91,5 @@ if [[ ! -n "$CPM_SOURCE_CACHE" ]]; then
 fi
 
 [ ! -n "$quiet" ] && echo "Virtual Env was loaded"
-[ ! -n "$quiet" ] && _usage
+[ ! -n "$quiet" ] && activate_usage
 
