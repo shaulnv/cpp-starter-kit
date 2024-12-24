@@ -8,7 +8,14 @@ install_compile_commands_json(starterkit-tests)
 install(TARGETS starterkit-tests RUNTIME DESTINATION tests)
 
 include(doctest)
-doctest_discover_tests(starterkit-tests)
+
+if(EMSCRIPTEN)
+  message(STATUS "Building Emscripten tests")
+  add_test(NAME starterkit-tests COMMAND node ${CMAKE_CURRENT_BINARY_DIR}/starterkit-tests.js)
+else()
+  message(STATUS "Building native tests")
+  doctest_discover_tests(starterkit-tests)
+endif()
 
 # enable compiler warnings
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")

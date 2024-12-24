@@ -26,13 +26,27 @@ This project uses [Conan](https://conan.io/) and [CMake](https://cliutils.gitlab
 2. **CLI** - Command-line interface for your library ([./cli](./cli)).
 3. **Tests** - Test suite using [doctest](https://github.com/doctest/doctest) ([./tests](./tests)).
 
+### Philosophy
+
+A software project should adhere to have distinct high-level components.  
+This is why we have a Library part and a CLI part.  
+The Library should consist of pure logic as much as possible.  
+The CLI is (more) platform-specific, as Linux, Windows, and Mac support it, while HTML/Android/iOS does not.  
+
+In that spirit, the project should aim to be cross-platform.  
+When supporting different platforms,  
+it becomes clearer to distinguish between logical components and platform-specific components.  
+The roject currently supports both native (Linux) and WebAssembly  
+(via Node.js, with HTML support planned for the future) platforms.  
+
 ### Build & Dev
 
 1. Activate the [virtual environment](https://www.youtube.com/watch?app=desktop&v=Y21OR1OPC9A): `source ./activate.sh` (run this in each new shell session).
-2. Build the project: `./build.sh [--release | --debug]` (default is `--debug`).  
-You'l need the `--release/--debug` flag only to change the build type, so call it once, and then just run `./build.sh`.  
-3. Run tests: `./test.sh`.  
-4. Dependencies:  
+2. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm]` (defaults are `--debug`, `--profile=native`).  
+You'l need to the give `build.sh` the flags only once, as it caches them.  
+3. Run the CLI: `./run.sh [-h]`.
+4. Run tests: `./test.sh`.  
+5. Dependencies:  
 The [conanfile.py](./conanfile.py) is the high level build script.  
 To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.  
 After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).  
