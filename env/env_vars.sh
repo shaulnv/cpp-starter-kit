@@ -28,19 +28,81 @@ update_env_file() {
   fi
 }
 
+#!/bin/bash
+
+# Function to display usage information
+usage() {
+  echo "Usage: $0 [OPTIONS]"
+  echo "Options:"
+  echo "  --release              Set build_type to Release"
+  echo "  --debug                Set build_type to Debug"
+  echo "  --profile <value>      Set profile to the specified value"
+  exit 0
+}
+
+# Function to parse command-line arguments and export environment variables
+parse_and_export() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --release)
+      build_type=Release
+      ;;
+    --debug)
+      build_type=Debug
+      ;;
+    --profile)
+      shift
+      if [[ -z "$1" || "$1" == --* ]]; then
+        echo "Error: Missing value for --profile"
+        exit 1
+      fi
+      profile="$1"
+      ;;
+    --*=*)
+      # Handle arbitrary --option=value
+      option="${1%%=*}"     # Extract option name
+      value="${1#*=}"       # Extract value
+      varname="${option:2}" # Strip leading --
+      "$varname"="$value"
+      ;;
+    --*)
+      # Handle arbitrary --option value
+      option="$1"
+      shift
+      if [[ -z "$1" || "$1" == --* ]]; then
+        echo "Error: Missing value for $option"
+        exit 1
+      fi
+      varname="${option:2}" # Strip leading --
+      "$varname"="$1"
+      ;;
+    -h | --help)
+      usage
+      ;;
+    *)
+      echo "Error: Invalid argument $1"
+      exit 1
+      ;;
+    esac
+    shift
+  done
+}
+
 # start
 ensure_sourced
 
 # activate python's virtual env
 source $root_dir/activate.sh --quiet
-# determent build type: debug/release
-build_type=Debug                         # default
+# env vars
+# default values --> read from .env file --> take from command line 
+build_type=Debug 
+profile=cpp
 source $root_dir/.env >/dev/null 2>&1 || true # read build_type env var
-# apply command line params
-if [ "$1" == '--debug' ]; then build_type=Debug; fi
-if [ "$1" == '--release' ]; then build_type=Release; fi
-# make the build_type persistent, so next time, we won't need to pass --release/--debug
-update_env_file $root_dir/.env build_type $build_type
-# check if we already build once, and get the build folder (for cmake --build)
-build_folder=$root_dir/build/$build_type
+parse_and_export "$@"
 
+# make the env vars persistent, so next time, we won't need to pass the command line flags
+update_env_file $root_dir/.env build_type $build_type
+update_env_file $root_dir/.env profile $profile
+
+# build folder (for cmake --build)
+build_folder=$root_dir/build/$build_type
