@@ -1,11 +1,23 @@
 #!/bin/bash
 
-source ./env/env_vars.sh $1
+# Get the build flags & activate the environment
+source ./env/_build_env_vars.sh "$@"
+
+# What we're building
+echo Profile: $profile
 echo Build: $build_type
 echo Build Folder: $build_folder
 
-if [ ! -d "$build_folder" ]; then
-  conan build . --build=missing -pr:a ./env/profiles/cpp.profile -s:h build_type=$build_type
+# Clean build if requested
+if [[ "$clean" == "true" ]]; then
+  rm -rf $build_folder
+fi
+
+# Build
+if [ ! -f "$build_folder/CMakeCache.txt" ]; then
+  # First time build: install dependencies & build (Conan does this)
+  conan build . --build=missing -pr:b ./env/profiles/native.profile -pr:h ./env/profiles/$profile.profile -s:h build_type=$build_type
 else
+  # Subsequent builds: regular CMake build
   cmake --build $build_folder
 fi
