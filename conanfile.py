@@ -38,6 +38,7 @@ class starterkit_libRecipe(ConanFile):
         deps = CMakeDeps(self)
         deps.generate()
         tc = CMakeToolchain(self, generator="Ninja")
+        # tc.variables["CMAKE_CXX_INCLUDE_WHAT_YOU_USE"] = "iwyu" # CONFIGURATION POINT
         tc.generate()
 
     def build(self):

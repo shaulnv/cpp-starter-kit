@@ -72,3 +72,30 @@ endif()
 if(USE_CCACHE)
   CPMAddPackage("gh:TheLartians/Ccache.cmake@1.2.4")
 endif()
+
+if(DEFINED CMAKE_CXX_INCLUDE_WHAT_YOU_USE AND CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+  # Path to fix_includes.py
+  set(FIX_INCLUDES_PY ${CMAKE_SOURCE_DIR}/env/tools/fix_includes.py)
+
+  if(EXISTS ${FIX_INCLUDES_PY})
+    # Output file for IWYU suggestions (ensure it exists before fixing includes)
+    set(IWYU_OUTPUT ${CMAKE_BINARY_DIR}/build.log)
+
+    if(EXISTS ${IWYU_OUTPUT})
+      # Find Python executable
+      find_program(PYTHON_EXECUTABLE NAMES python3 REQUIRED)
+
+      # Add a custom target to fix includes based on IWYU output
+      add_custom_target(
+        fix-includes
+        COMMAND ${PYTHON_EXECUTABLE} ${FIX_INCLUDES_PY} < ${IWYU_OUTPUT}
+        COMMENT "Fixing includes based on IWYU suggestions"
+        VERBATIM)
+    else()
+      message(WARNING "IWYU output file (${IWYU_OUTPUT}) not found. Skipping the fix-includes target.")
+    endif()
+  else()
+    message(WARNING "fix_includes.py not found. Skipping the fix-includes target.")
+  endif()
+endif()
+
