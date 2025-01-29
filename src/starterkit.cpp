@@ -1,5 +1,8 @@
 // std
 #include <iostream>
+#include <string>
+#include <vector>
+
 // project
 #include "starterkit.h"
 
