@@ -16,6 +16,9 @@ option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 # set(CMAKE_CXX_STANDARD 17) # this is set at env/profiles/cpp.profile
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_C_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # cmake modules
 include(CTest)
