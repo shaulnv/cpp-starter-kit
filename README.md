@@ -34,12 +34,12 @@ You'l need the `--release/--debug` flag only to change the build type, so call i
 3. Run tests: `./test.sh`.  
 4. Dependencies:  
 The [conanfile.py](./conanfile.py) is the high level build script.  
-To add 3rd party C++ packages, set it in the ['requires'](https://github.com/shaulnv/cpp-starter-kit/blob/e8b60c71d5887fe0f32521f704d1a818593b6a70/conanfile.py#L22) attribute.  
+To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.  
 After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).  
 You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
-[conanfile.py](https://github.com/shaulnv/cpp-starter-kit/blob/e8b60c71d5887fe0f32521f704d1a818593b6a70/conanfile.py#L22),
-[CMakeLists.txt](https://github.com/shaulnv/cpp-starter-kit/blob/e8b60c71d5887fe0f32521f704d1a818593b6a70/src/CMakeLists.txt#L1), and then in
-[code](https://github.com/shaulnv/cpp-starter-kit/blob/9ac5e1ead17a929586de92b2938d470307120e31/cli/src/main-cli.cpp#L31).
+[conanfile.py](./conanfile.py#L22),
+[CMakeLists.txt](./src/CMakeLists.txt#L1), and then in
+[code](./cli/src/main-cli.cpp#L29).
 
 ## VS Code Integration
 
