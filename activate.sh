@@ -4,14 +4,14 @@
 # after script runs to complete, see usage()
 #
 
-usage() {
+_usage() {
     echo "Usage:"
     echo "  all your dev env tools are in the path (cmake, conan, etc.)."
     echo "  if you need to call 'sudo ...' use 'venv-sudo ...' instead."
 }
 
 # function to check if the script is sourced
-ensure_sourced() {
+_ensure_sourced() {
     if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         echo "Error: This script must be sourced, not executed."
         echo "Please run: source ${BASH_SOURCE[0]}"
@@ -19,7 +19,7 @@ ensure_sourced() {
     fi
 }
 
-get_latest_python_version() {
+_get_latest_python_version() {
     # Find all Python executables
     python_versions=$(ls /usr/bin/python3* 2>/dev/null | grep -Eo 'python3\.[0-9]+' | sort -V)
 
@@ -40,14 +40,14 @@ root_dir=$script_dir
 red="\033[0;31m"
 green="\033[0;32m"
 nc='\033[0m' # No Color
-python_exe=$(get_latest_python_version)
+python_exe=$(_get_latest_python_version)
 
 # function to run any program as sudo, inside the virtual env
 #   e.g. if you have a test which need sudo, use venv-sudo ./regression.py ...
 alias venv-sudo='sudo -E env "PATH=$PATH" "VIRTUAL_ENV=$VIRTUAL_ENV"'
 
 # we need this script sourced, as it activate python venv, which itself need to be sourced
-ensure_sourced
+_ensure_sourced
 
 if [[ "$1" == "--quiet" || "$1" == "-q" ]]; then
     quiet=true
@@ -91,4 +91,5 @@ if [[ ! -n "$CPM_SOURCE_CACHE" ]]; then
 fi
 
 [ ! -n "$quiet" ] && echo "Virtual Env was loaded"
-[ ! -n "$quiet" ] && usage
+[ ! -n "$quiet" ] && _usage
+
