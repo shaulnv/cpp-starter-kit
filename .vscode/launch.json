@@ -5,6 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "conanfile.py",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "conans.conan",
+      "justMyCode": true,
+      "args": [
+        "build",
+        ".",
+        "--build=missing",
+        "-pr:b",
+        "./env/profiles/native.profile",
+        "-pr:h",
+        "./env/profiles/native.profile",
+        "-s:a",
+        "build_type=Debug"
+      ]
+    },
+    {
       "name": "CMake Target",
       "type": "cppdbg",
       "request": "launch",
