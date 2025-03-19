@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/Takishima/cmake-pre-commit-hooks
+    rev: v1.8.0
+    hooks:
+      - id: clang-format
+        args: [--style=file, -i]
+      - id: clang-tidy
+        args: [--checks=readability-magic-numbers, --warnings-as-errors=*]
+      - id: cppcheck
+        args: []

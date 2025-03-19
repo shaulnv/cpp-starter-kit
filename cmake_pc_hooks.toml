@@ -1,0 +1,5 @@
+no_cmake_configure = true
+build_dir = ["build/Debug", "build/Release"]
+errors = "dev"
+dev_warnings = true
+all_at_once = true
