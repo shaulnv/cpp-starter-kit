@@ -1,3 +1,4 @@
+[hook]
 no_cmake_configure = true
 build_dir = ["build/Debug", "build/Release"]
 errors = "dev"
