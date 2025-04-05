@@ -24,10 +24,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS})
 
 # cmake modules
 include(CTest)
-include(cmake/CPM.cmake)
-include(cmake/PreventInSourceBuilds.cmake)
-include(cmake/tools.cmake)
-include(cmake/helpers.cmake)
+include(env/cmake/CPM.cmake)
+include(env/cmake/PreventInSourceBuilds.cmake)
+include(env/cmake/tools.cmake)
+include(env/cmake/helpers.cmake)
 
 # deps
 # use CPM for import of internal cmake based projects
