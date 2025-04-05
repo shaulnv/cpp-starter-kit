@@ -1,7 +1,7 @@
 #!/bin/bash
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-root_dir=$(realpath "$script_dir/..")
+root_dir=$(realpath "$script_dir/../../../")
 
 green="\033[32m"
 no_color="\033[0m"
