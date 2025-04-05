@@ -35,8 +35,7 @@ _get_latest_python_version() {
     fi
 }
 
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-root_dir=$script_dir
+root_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 red="\033[0;31m"
 green="\033[0;32m"
 nc='\033[0m' # No Color
@@ -92,4 +91,3 @@ fi
 
 [ ! -n "$quiet" ] && echo "Virtual Env was loaded"
 [ ! -n "$quiet" ] && activate_usage
-

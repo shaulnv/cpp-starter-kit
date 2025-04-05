@@ -23,7 +23,7 @@ class starterkit_libRecipe(ConanFile):
     test_requires = "doctest/2.4.11"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "CMakeLists.txt", "src/*", "include/*", "cli/*", "tests/*", "cmake/*"
+    exports_sources = "CMakeLists.txt", "src/*", "include/*", "cli/*", "tests/*", "env/*"
 
     def config_options(self):
         if self.settings.os == "Windows":
