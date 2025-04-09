@@ -27,3 +27,7 @@ install-github-cli
 # Clean up OS packages
 sudo apt clean -y
 sudo rm -rf /var/lib/apt/lists/*
+
+# install uv (a Python's package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.12
