@@ -7,25 +7,23 @@ SHELL ["/bin/bash", "-c"]
 ENV STARTERKIT_DEVCONTAINER=1
 # Conan's cache directory
 ENV CONAN_HOME=/.conan2
+# uv's tool directories
+ENV UV_BASE_DIR=/usr/local/share/uv
+ENV UV_INSTALL_DIR=$UV_BASE_DIR/bin
+ENV UV_TOOL_DIR=$UV_BASE_DIR/tool
+ENV UV_TOOL_BIN_DIR=$UV_BASE_DIR/tool/bin
+# Ensure the virtual environment is activated by default
+ENV PATH="$UV_INSTALL_DIR:$UV_TOOL_BIN_DIR:/opt/venv/bin:$PATH"
 # Set noninteractive mode for apt-get
 ENV DEBIAN_FRONTEND=noninteractive
 # Install 'sudo' as it's required in scripts
 RUN apt -y update && apt -y upgrade && apt -y install sudo
 # Dev env setup
 # Setup the project
-COPY ./setup.sh ./env/requirements.txt ./
-RUN ./setup.sh && rm ./setup.sh 
-# Create and configure a virtual environment
-RUN python3 -m venv /opt/venv
-# Ensure the virtual environment is activated by default
-ENV PATH="/opt/venv/bin:$PATH"
-# Install dependencies within the virtual environment
-RUN pip install --no-input --upgrade pip && \
-    pip install --no-input -r ./requirements.txt
-# Configure Conan's profile
-RUN conan profile detect -e
-# Clean up
-RUN rm -f ./setup.sh ./requirements.txt
+COPY ./setup.sh ./
+COPY ./env/scripts/_install_uv.sh ./env/scripts/_install_uv.sh
+RUN ./setup.sh && rm -f ./setup.sh && rm -rf ./env
+RUN mkdir -p $CONAN_HOME
 
 # Users:
 # Make the host user accessable inside the container
@@ -51,8 +49,11 @@ RUN echo 'root:1234' | chpasswd
 RUN chsh -s /bin/bash $HOST_USER && chsh -s /bin/bash root
 # Share common folders for root and HOST_USER
 RUN ln -s /home/$HOST_USER/.ssh /root/.ssh
-# Ensure the Conan cache directory is owned by the host user
-RUN chown -R $HOST_USER:$HOST_USER $CONAN_HOME
+# Ensure tools directories are owned by the host user
+RUN chown -R $HOST_USER:$HOST_USER $CONAN_HOME \
+    && chown -R $HOST_USER:$HOST_USER $UV_BASE_DIR
+RUN chmod -R 777 $CONAN_HOME \
+    && chmod -R 777 $UV_BASE_DIR
 
 USER $HOST_USER
 WORKDIR /home/$HOST_USER
