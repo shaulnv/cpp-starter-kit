@@ -1,0 +1,14 @@
+[project]
+name = "cpp-starter-kit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv]
+default-groups = ["dev", "lint"]
+
+[dependency-groups]
+dev = ["cmake>=3.30.0", "conan>=2.15.0", "ninja>=1.10.0"]
+lint = ["clang-format>=20.1.0", "cmakelang[yaml]>=0.6.13"]
