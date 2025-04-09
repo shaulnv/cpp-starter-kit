@@ -5,7 +5,7 @@ function(add_post_build_copy target source_file destination_file)
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${source_file}"
-                "${destination_file}" || true
+                "${destination_file}" > /dev/null 2>&1 || true
         COMMENT "Copying ${source_file} to ${destination_file} after building ${target}"
     )
 endfunction()

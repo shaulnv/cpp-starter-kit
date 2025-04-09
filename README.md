@@ -57,6 +57,8 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 
 ## VS Code Integration
 
+### Workspace
+
 1. Open `./starterkit.code-workspace` in VS Code.
 2. Run `./build.sh` once to generate the CMake build folder.
 3. From the Command Palette (`Ctrl+P`) run `CMake: Set Build Target`  
@@ -77,6 +79,20 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
    - Some shortcuts:  
       - `Ctrl+; Ctrl+C`: Debug test at cursor
       - `Ctrl+; Ctrl+F`: Debug tests in current file
+
+### Dev Container
+
+1. Open the project in VS Code.
+2. From the Command Palette (`Ctrl+Shift+P`) run `Dev Container: Open workspace in container`.
+   This will start a container with the project opened, with all the dependencies installed.
+   First time may take some time (Docker's image build will take about 2 minutes).
+   You can use it to develop the project without the need to install the dependencies on your machine.
+
+### GitHub Codespaces
+
+1. You can use GitHub Codespaces to develop the project.
+2. Just go to your GitHub repo and click on the `Code` button.
+   ![GitHub Codespaces](doc/res/github-codespaces.png)
 
 ## Small Features
 
