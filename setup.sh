@@ -40,7 +40,16 @@ sudo apt install -y --no-install-recommends \
   nodejs
 
 install-github-cli
+# install uv (the Python's package manager used by the project)
+source $root_dir/env/scripts/install_uv.sh
 
 # Clean up OS packages
 sudo apt clean -y
 sudo rm -rf /var/lib/apt/lists/*
+
+# install uv (a Python's package manager)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# mark setup as done
+touch $root_dir/.env
+

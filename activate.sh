@@ -19,27 +19,12 @@ _ensure_sourced() {
     fi
 }
 
-_get_latest_python_version() {
-    # Find all Python executables
-    python_versions=$(ls /usr/bin/python3* 2>/dev/null | grep -Eo 'python3\.[0-9]+' | sort -V)
-
-    # Extract the latest version
-    latest_version=$(echo "$python_versions" | tail -n 1 | grep -Eo '3\.[0-9]+')
-
-    # Print the result
-    if [ -n "$latest_version" ]; then
-        echo "python$latest_version"
-    else
-        # No Python 3.x versions found, so let it failed normaly
-        echo python3
-    fi
-}
-
 root_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+venv_dir=$root_dir/.venv
 red="\033[0;31m"
 green="\033[0;32m"
+yellow="\033[0;33m"
 nc='\033[0m' # No Color
-python_exe=$(_get_latest_python_version)
 
 # function to run any program as sudo, inside the virtual env
 #   e.g. if you have a test which need sudo, use venv-sudo ./regression.py ...
@@ -52,35 +37,56 @@ if [[ "$1" == "--quiet" || "$1" == "-q" ]]; then
     quiet=true
 fi
 
+# verify ./setup.sh was run
+if ! command -v uv &>/dev/null && [[ ! -d $venv_dir ]] && [[ ! -f $root_dir/.env ]]; then
+    echo -e "${yellow}WARNING: 'uv' not found. Please make sure you ran ./setup.sh to install build dependencies.${nc}"
+fi
+
+# add uv into the path, if not already there
+source $root_dir/env/scripts/install_uv.sh
+
 # install virtual env
-venv_dir=$root_dir/.venv
 (
     # exit on command failure
     set -eE
     set -o pipefail
     trap 'deactivate &> /dev/null; rm -rf $venv_dir' ERR
-
     # install the venv only once
     if [[ ! -d $venv_dir ]]; then
-        echo -e "${green}Creating a ${python_exe}'s Virtual Env...${nc}"
-        $python_exe -m venv $venv_dir
-        source $venv_dir/bin/activate
-        pip install --upgrade pip
-        pip install -r $root_dir/env/requirements.txt
-        # conan setup
-        # this gets conan the build defs: gcc version, os, etc.
-        conan profile detect -e
-    fi
-) || true
+        echo -e "${green}Creating a Python's Virtual Env...${nc}"
+        echo "Running uv sync ..."
+        uv sync || {
+            echo -e "${red}uv sync failed${nc}"
+            exit 10
+        }
 
-if [[ ! -d $venv_dir ]]; then
-    echo -e "${red}ERROR: Failed creating a Python's Virtual Env.${nc}"
-    return
-fi
+        source $venv_dir/bin/activate
+
+        echo "Installing pre-commit hooks ..."
+        pre-commit install || {
+            echo -e "${red}pre-commit install failed${nc}"
+            exit 10
+        }
+
+        # conan setup
+        echo "Detecting conan profile ..."
+        conan profile detect -e || {
+            echo -e "${red}conan profile detect failed${nc}"
+            exit 12
+        }
+    fi
+) || {
+    exit_code=$?
+    echo -e "${red}ERROR: Failed creating a Python's Virtual Env. error code: $exit_code.${nc}"
+    return $exit_code
+}
 
 # activate vitural env (if not activated alreay)
 if [[ ! -n "$VIRTUAL_ENV" ]]; then
-    source $venv_dir/bin/activate
+    source $venv_dir/bin/activate || {
+        echo -e "${red}Failed to activate virtual environment${nc}"
+        exit 13
+    }
 fi
 
 # cache 3rd parties CMake projects, imported by CPM
