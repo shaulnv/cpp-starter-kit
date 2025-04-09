@@ -41,21 +41,25 @@ The roject currently supports both native (Linux) and WebAssembly
 
 ### Build & Dev
 
-1. Activate the [virtual environment](https://www.youtube.com/watch?app=desktop&v=Y21OR1OPC9A): `source ./activate.sh` (run this in each new shell session).
-2. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm]` (defaults are `--debug`, `--profile=native`).  
-You'l need to the give `build.sh` the flags only once, as it caches them.  
-3. Run the CLI: `./run.sh [-h]`.
-4. Run tests: `./test.sh`.  
-5. Dependencies:  
-The [conanfile.py](./conanfile.py) is the high level build script.  
-To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.  
-After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).  
+1. Install dependencies: `./setup.sh`.
+   Minimal dependencies: `git`, `curl`, and a C++ compiler.
+2. Activate the [virtual environment](https://www.youtube.com/watch?app=desktop&v=Y21OR1OPC9A): `source ./activate.sh` (run this in each new shell session).
+3. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm]` (defaults are `--debug`, `--profile=native`).
+   You'l need to the give `build.sh` the flags only once, as it caches them.
+4. Run the CLI: `./run.sh [-h]`.
+5. Run tests: `./test.sh`.
+6. Dependencies:
+The [conanfile.py](./conanfile.py) is the high level build script.
+To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.
+After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).
 You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 [conanfile.py](./conanfile.py#L22),
 [CMakeLists.txt](./src/CMakeLists.txt#L1), and then in
 [code](./cli/src/main-cli.cpp#L29).
 
 ## VS Code Integration
+
+### Workspace
 
 1. Open `./starterkit.code-workspace` in VS Code.
 2. Run `./build.sh` once to generate the CMake build folder.
@@ -77,6 +81,20 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
    - Some shortcuts:  
       - `Ctrl+; Ctrl+C`: Debug test at cursor
       - `Ctrl+; Ctrl+F`: Debug tests in current file
+
+### Dev Container
+
+1. Open the project in VS Code.
+2. From the Command Palette (`Ctrl+Shift+P`) run `Dev Container: Open workspace in container`.
+   This will start a container with the project opened, with all the dependencies installed.
+   First time may take some time (Docker's image build will take about 2 minutes).
+   You can use it to develop the project without the need to install the dependencies on your machine.
+
+### GitHub Codespaces
+
+1. You can use GitHub Codespaces to develop the project.
+2. Just go to your GitHub repo and click on the `Code` button.
+   ![GitHub Codespaces](doc/res/github-codespaces.png)
 
 ## Small Features
 
