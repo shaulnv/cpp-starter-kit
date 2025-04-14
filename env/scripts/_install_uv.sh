@@ -1,4 +1,4 @@
-#!/bin/bash
+# This library script is meant to be sourced
 
 red="\033[0;31m"
 green="\033[0;32m"

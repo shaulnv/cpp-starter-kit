@@ -11,7 +11,7 @@ target_include_directories(
           $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/starterkit>)
 # being a cross-platform target, we enforce standards conformance on MSVC
 target_compile_options(starterkit PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
-target_link_libraries(starterkit PRIVATE fmt::fmt) 
+target_link_libraries(starterkit PRIVATE fmt::fmt)
 add_library(starterkit::starterkit ALIAS starterkit)
 install_compile_commands_json(starterkit)
 

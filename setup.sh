@@ -52,4 +52,3 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # mark setup as done
 touch $root_dir/.env
-

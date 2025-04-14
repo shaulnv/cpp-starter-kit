@@ -26,7 +26,7 @@ RUN ./setup.sh && rm -f ./setup.sh && rm -rf ./env
 RUN mkdir -p $CONAN_HOME
 
 # Users:
-# Make the host user accessable inside the container
+# Make the host user accessible inside the container
 ARG USERNAME=ubuntu
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}

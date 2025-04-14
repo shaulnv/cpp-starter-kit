@@ -10,4 +10,3 @@ build_type=Release
 
 [tool_requires]
 emsdk/3.1.72
-
