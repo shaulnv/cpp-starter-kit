@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 
 
 class starterkit_libRecipe(ConanFile):
@@ -23,7 +23,14 @@ class starterkit_libRecipe(ConanFile):
     test_requires = "doctest/2.4.11"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "CMakeLists.txt", "src/*", "include/*", "cli/*", "tests/*", "env/*"
+    exports_sources = (
+        "CMakeLists.txt",
+        "src/*",
+        "include/*",
+        "cli/*",
+        "tests/*",
+        "env/*",
+    )
 
     def config_options(self):
         if self.settings.os == "Windows":
