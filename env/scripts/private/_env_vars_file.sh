@@ -1,4 +1,4 @@
-#!/bin/bash
+# This library script is meant to be sourced
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source $script_dir/_utils.sh

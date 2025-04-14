@@ -81,7 +81,7 @@ source $root_dir/env/scripts/install_uv.sh
     return $exit_code
 }
 
-# activate vitural env (if not activated alreay)
+# activate vitural env (if not activated already)
 if [[ ! -n "$VIRTUAL_ENV" ]]; then
     source $venv_dir/bin/activate || {
         echo -e "${red}Failed to activate virtual environment${nc}"
@@ -90,7 +90,7 @@ if [[ ! -n "$VIRTUAL_ENV" ]]; then
 fi
 
 # cache 3rd parties CMake projects, imported by CPM
-# you can set this env var in your .bashrc to a more persistant place like $HOME/.cache/CPM
+# you can set this env var in your .bashrc to a more persistent place like $HOME/.cache/CPM
 if [[ ! -n "$CPM_SOURCE_CACHE" ]]; then
     export CPM_SOURCE_CACHE=$root_dir/.cache/CPM
 fi

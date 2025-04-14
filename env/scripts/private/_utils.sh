@@ -1,4 +1,4 @@
-#!/bin/bash
+# This library script is meant to be sourced
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 root_dir=$(realpath "$script_dir/../../../")

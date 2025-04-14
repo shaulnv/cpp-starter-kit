@@ -9,7 +9,6 @@
 int starterkit_lib_answer() { return 42; }
 
 void starterkit_lib() {
-
 #ifdef NDEBUG
   std::cout << "starterkit/0.0.1: Hello World Release!\n";
 #else
@@ -43,23 +42,22 @@ void starterkit_lib() {
 
 // Libstdc++
 #if defined _GLIBCXX_USE_CXX11_ABI
-  std::cout << "  starterkit/0.0.1: _GLIBCXX_USE_CXX11_ABI "
-            << _GLIBCXX_USE_CXX11_ABI << "\n";
+  std::cout << "  starterkit/0.0.1: _GLIBCXX_USE_CXX11_ABI " << _GLIBCXX_USE_CXX11_ABI << "\n";
 #endif
 
 // MSVC runtime
 #if defined(_DEBUG)
-#if defined(_MT) && defined(_DLL)
+#  if defined(_MT) && defined(_DLL)
   std::cout << "  starterkit/0.0.1: MSVC runtime: MultiThreadedDebugDLL\n";
-#elif defined(_MT)
+#  elif defined(_MT)
   std::cout << "  starterkit/0.0.1: MSVC runtime: MultiThreadedDebug\n";
-#endif
+#  endif
 #else
-#if defined(_MT) && defined(_DLL)
+#  if defined(_MT) && defined(_DLL)
   std::cout << "  starterkit/0.0.1: MSVC runtime: MultiThreadedDLL\n";
-#elif defined(_MT)
+#  elif defined(_MT)
   std::cout << "  starterkit/0.0.1: MSVC runtime: MultiThreaded\n";
-#endif
+#  endif
 #endif
 
 // COMPILER VERSIONS
@@ -76,8 +74,7 @@ void starterkit_lib() {
 #endif
 
 #if __INTEL_COMPILER
-  std::cout << "  starterkit/0.0.1: __INTEL_COMPILER" << __INTEL_COMPILER
-            << "\n";
+  std::cout << "  starterkit/0.0.1: __INTEL_COMPILER" << __INTEL_COMPILER << "\n";
 #endif
 
 #if __GNUC__
@@ -97,8 +94,7 @@ void starterkit_lib() {
 #endif
 
 #if __apple_build_version__
-  std::cout << "  starterkit/0.0.1: __apple_build_version__"
-            << __apple_build_version__ << "\n";
+  std::cout << "  starterkit/0.0.1: __apple_build_version__" << __apple_build_version__ << "\n";
 #endif
 
   // SUBSYSTEMS
