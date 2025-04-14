@@ -1,4 +1,4 @@
-#!/bin/bash
+# This library script is meant to be sourced
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source $script_dir/_utils.sh
@@ -10,7 +10,7 @@ _build_usage() {
   echo "Options:"
   echo "  --release               Build Release"
   echo "  --debug                 Build Debug"
-  echo "  --profile <native|wasm> Build to a spesific architecture"
+  echo "  --profile <native|wasm> Build to a specific architecture"
   echo "  --clean                 Clean the build folder"
   exit 0
 }

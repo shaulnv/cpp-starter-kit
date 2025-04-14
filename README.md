@@ -9,13 +9,13 @@
 > ```shell
 >   # put your project name here:
 >   (export project=<project name here> && gh repo create $project --private --clone --template shaulnv/cpp-starter-kit && cd $project && ./init.sh)
->   ```  
+>   ```
 >
-Or, do it manualy:
+Or, do it manually:
 
 1. Use this template to create a new repository for your project.
 2. Clone your repository locally.
-3. In the project root, run `./init.sh`.  
+3. In the project root, run `./init.sh`.
    This script will replace all `starterkit` placeholders with your project name, commits the changes, and prepare your project for development.
 
 ### Project Structure
@@ -28,16 +28,16 @@ This project uses [Conan](https://conan.io/) and [CMake](https://cliutils.gitlab
 
 ### Philosophy
 
-A software project should adhere to have distinct high-level components.  
-This is why we have a Library part and a CLI part.  
-The Library should consist of pure logic as much as possible.  
-The CLI is (more) platform-specific, as Linux, Windows, and Mac support it, while HTML/Android/iOS does not.  
+A software project should adhere to have distinct high-level components.
+This is why we have a Library part and a CLI part.
+The Library should consist of pure logic as much as possible.
+The CLI is (more) platform-specific, as Linux, Windows, and Mac support it, while HTML/Android/iOS does not.
 
-In that spirit, the project should aim to be cross-platform.  
-When supporting different platforms,  
-it becomes clearer to distinguish between logical components and platform-specific components.  
-The roject currently supports both native (Linux) and WebAssembly  
-(via Node.js, with HTML support planned for the future) platforms.  
+In that spirit, the project should aim to be cross-platform.
+When supporting different platforms,
+it becomes clearer to distinguish between logical components and platform-specific components.
+The roject currently supports both native (Linux) and WebAssembly
+(via Node.js, with HTML support planned for the future) platforms.
 
 ### Build & Dev
 
@@ -63,22 +63,22 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 
 1. Open `./starterkit.code-workspace` in VS Code.
 2. Run `./build.sh` once to generate the CMake build folder.
-3. From the Command Palette (`Ctrl+P`) run `CMake: Set Build Target`  
-   Choose the target to build (recomended: `all`).
-4. From the Command Palette (`Ctrl+P`) run `CMake: Set Launch/Debug Target`  
+3. From the Command Palette (`Ctrl+P`) run `CMake: Set Build Target`
+   Choose the target to build (recommended: `all`).
+4. From the Command Palette (`Ctrl+P`) run `CMake: Set Launch/Debug Target`
    Select current target:
    - `starterkit-cli` to run/debug the CLI.
-   - `starterkit-tests` to run/debug the unit-tests.  
+   - `starterkit-tests` to run/debug the unit-tests.
 5. With the selected target you can:
    1. Press `F7` to build
    2. Press `Ctrl+F5` to run
    3. Press `F5` to debug
-6. Run `CMake: Reveal Test Explorer` to run spesific tests. use the `TestMate C++` section.  
-   - Start/Stop continues test watch on each build (the ![eye icon](doc/res/vscode-tests-continues-watch-eye-icon.png) icon):  
-      ![start/stop continues test watch](doc/res/vscode-tests-continues-watch.png)  
-   - Go to `starterkit-test.cpp`, hover ovet the green ![Play](doc/res/vscode-test-case-v.png)/![Play](doc/res/vscode-test-case-play.png) to the left of each test:  
-      ![run/debug a test case](doc/res/vscode-test-case.png)  
-   - Some shortcuts:  
+6. Run `CMake: Reveal Test Explorer` to run specific tests. use the `TestMate C++` section.
+   - Start/Stop continues test watch on each build (the ![eye icon](doc/res/vscode-tests-continues-watch-eye-icon.png) icon):
+      ![start/stop continues test watch](doc/res/vscode-tests-continues-watch.png)
+   - Go to `starterkit-test.cpp`, hover ovet the green ![Play](doc/res/vscode-test-case-v.png)/![Play](doc/res/vscode-test-case-play.png) to the left of each test:
+      ![run/debug a test case](doc/res/vscode-test-case.png)
+   - Some shortcuts:
       - `Ctrl+; Ctrl+C`: Debug test at cursor
       - `Ctrl+; Ctrl+F`: Debug tests in current file
 
@@ -98,19 +98,19 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 
 ## Small Features
 
-1. [**`direnv` Support**](https://direnv.net/): The repository includes a `.envrc` file for `direnv` integration.  
+1. [**`direnv` Support**](https://direnv.net/): The repository includes a `.envrc` file for `direnv` integration.
    To enable it:
-   1. Install `direnv`:  
+   1. Install `direnv`:
 
       ```bash
       apt install direnv
       ```
 
-   2. Add the hook to your `.bashrc` file:  
+   2. Add the hook to your `.bashrc` file:
 
       ```bash
       # Enable direnv (place after rvm, git-prompt, or similar extensions)
-      eval "$(direnv hook bash)"  
+      eval "$(direnv hook bash)"
       export DIRENV_LOG_FORMAT=""  # Suppress direnv output
       ```
 
