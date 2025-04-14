@@ -1,7 +1,7 @@
+.cache/
 .venv/
+.env
 build/
 Testing/
-.cache/
 out/
 CMakeUserPresets.json
-.env
