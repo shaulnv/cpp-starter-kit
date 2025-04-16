@@ -1,8 +1,6 @@
 # C++ Project Starter Kit
 
-## Getting Started
-
-### Initial Setup
+## Create a new project
 >
 > Tip: To quickly create a new project, run (uses [`gh`](https://cli.github.com/)):
 >
@@ -18,7 +16,7 @@ Or, do it manually:
 3. In the project root, run `./init.sh`.
    This script will replace all `starterkit` placeholders with your project name, commits the changes, and prepare your project for development.
 
-### Project Structure
+## Project Structure
 
 This project uses [Conan](https://conan.io/) and [CMake](https://cliutils.gitlab.io/modern-cmake/README.html). It includes:
 
@@ -26,7 +24,7 @@ This project uses [Conan](https://conan.io/) and [CMake](https://cliutils.gitlab
 2. **CLI** - Command-line interface for your library ([./cli](./cli)).
 3. **Tests** - Test suite using [doctest](https://github.com/doctest/doctest) ([./tests](./tests)).
 
-### Philosophy
+## Philosophy
 
 A software project should adhere to have distinct high-level components.
 This is why we have a Library part and a CLI part.
@@ -39,7 +37,7 @@ it becomes clearer to distinguish between logical components and platform-specif
 The roject currently supports both native (Linux) and WebAssembly
 (via Node.js, with HTML support planned for the future) platforms.
 
-### Build & Dev
+## Build & Dev
 
 1. Install dependencies: `./setup.sh`.
    Minimal dependencies: `git`, `curl`, and a C++ compiler.
