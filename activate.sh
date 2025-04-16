@@ -19,6 +19,30 @@ _ensure_sourced() {
     fi
 }
 
+is_tool_exits() {
+    local cmd=$1
+    local name=$2
+    if ! hash "$cmd" 2>/dev/null; then
+        echo -e "${red}ERROR: $name ($cmd) not found.${nc}"
+        return 1
+    fi
+    return 0
+}
+
+verify_prerequisites() {
+    (
+        set -eE
+        set -o pipefail
+
+        is_tool_exits curl "curl"
+        is_tool_exits g++ "g++" || is_tool_exits clang "clang"
+    ) || {
+        exit_code=$?
+        echo -e "${red}ERROR: Pre-requisites are not met.\n\tDependencies are: curl, C++ compiler.\n\tBest: run ./setup.sh${nc}"
+        return $exit_code
+    }
+}
+
 root_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 venv_dir=$root_dir/.venv
 red="\033[0;31m"
@@ -37,13 +61,11 @@ if [[ "$1" == "--quiet" || "$1" == "-q" ]]; then
     quiet=true
 fi
 
-# verify ./setup.sh was run
-if ! command -v uv &>/dev/null && [[ ! -d $venv_dir ]] && [[ ! -f $root_dir/.env ]]; then
-    echo -e "${yellow}WARNING: 'uv' not found. Please make sure you ran ./setup.sh to install build dependencies.${nc}"
-fi
-
-# add uv into the path
+# add uv into the path, if not already there
 source $root_dir/env/scripts/_install_uv.sh
+
+verify_prerequisites || return $?
+
 # install virtual env
 (
     # exit on command failure
@@ -61,11 +83,15 @@ source $root_dir/env/scripts/_install_uv.sh
 
         source $venv_dir/bin/activate
 
-        echo "Installing pre-commit hooks ..."
-        pre-commit install || {
-            echo -e "${red}pre-commit install failed${nc}"
-            exit 10
-        }
+        # pre-commit is used only in dev.
+        # if git is not installed, the context is only building.
+        if command -v git >/dev/null 2>&1; then
+            echo "Installing pre-commit hooks ..."
+            pre-commit install || {
+                echo -e "${red}pre-commit install failed${nc}"
+                exit 10
+            }
+        fi
 
         # conan setup
         echo "Detecting conan profile ..."
@@ -84,7 +110,7 @@ source $root_dir/env/scripts/_install_uv.sh
 if [[ ! -n "$VIRTUAL_ENV" ]]; then
     source $venv_dir/bin/activate || {
         echo -e "${red}Failed to activate virtual environment${nc}"
-        exit 13
+        return 13
     }
 fi
 
@@ -94,5 +120,5 @@ if [[ ! -n "$CPM_SOURCE_CACHE" ]]; then
     export CPM_SOURCE_CACHE=$root_dir/.cache/CPM
 fi
 
-[ ! -n "$quiet" ] && echo "Virtual Env was loaded"
-[ ! -n "$quiet" ] && activate_usage
+[ ! -n "$quiet" ] && echo "Virtual Env was loaded" || true
+[ ! -n "$quiet" ] && activate_usage || true

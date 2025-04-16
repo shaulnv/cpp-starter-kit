@@ -102,6 +102,6 @@ function _create_env_vars_file() {
 # start
 ensure_sourced
 
-activate_venv
+activate_venv || return $?
 _create_env_vars_file "$@"
 load_env_vars
