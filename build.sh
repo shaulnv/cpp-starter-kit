@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./env/scripts/private/_build_env_vars.sh "$@"
+source ./env/scripts/private/_build_env_vars.sh "$@" || exit $?
 echo Profile: $profile
 echo Build: $build_type
 echo Build Folder: $build_folder
