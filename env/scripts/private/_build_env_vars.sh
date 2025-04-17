@@ -72,14 +72,7 @@ function _create_env_vars_file() {
   local build_type=Debug
   local profile=native
   source $script_dir/_env_vars_file.sh
-  local stored_profile=$profile
   _parse_command_line "$@"
-
-  # if the profile has changed, we need a clean build
-  if [[ -n "$stored_profile" && "$stored_profile" != "$profile" ]]; then
-    echo -e "${green}Profile changed, will do a clean build${no_color}"
-    clean=true
-  fi
 
   # set the cli name and driver based on the profile
   if [[ "$profile" == "wasm" ]]; then
@@ -91,12 +84,22 @@ function _create_env_vars_file() {
   fi
 
   local build_folder=$root_dir/build/$build_type
+  local build_folder_full=$root_dir/build/$profile/$build_type
   local cli_path="$build_folder/cli/$cli_name"
 
   # make the env vars persistent, so next time, we won't need to pass the command line flags
-  for var in build_type profile build_folder cli_name cli_path driver; do
+  for var in build_type profile build_folder build_folder_full cli_name cli_path driver; do
     update_env_vars_file $root_dir/.env $var ${!var}
   done
+}
+
+function _create_build_folder() {
+  local build_folder=$1
+  local build_folder_full=$2
+
+  mkdir -p $build_folder_full
+  rm -f $build_folder
+  ln -sr $build_folder_full $build_folder
 }
 
 # start
@@ -105,3 +108,4 @@ ensure_sourced
 activate_venv || return $?
 _create_env_vars_file "$@"
 load_env_vars
+_create_build_folder $build_folder $build_folder_full

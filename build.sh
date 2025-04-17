@@ -10,7 +10,7 @@ echo Build Folder: $build_folder
 
 # Clean build if requested
 if [[ "$clean" == "true" ]]; then
-  rm -rf $build_folder
+  rm -rf $build_folder/*
 fi
 
 # Build
