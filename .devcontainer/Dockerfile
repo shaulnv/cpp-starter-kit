@@ -1,5 +1,10 @@
 FROM ubuntu:22.04
 
+# Configuration
+ARG NODE_VERSION=20
+# see https://github.com/nvm-sh/nvm/releases for the latest version
+ARG NVM_VERSION=v0.40.2
+
 # Set the default shell to bash
 SHELL ["/bin/bash", "-c"]
 
@@ -16,8 +21,12 @@ ENV UV_TOOL_BIN_DIR=$UV_BASE_DIR/tool/bin
 ENV PATH="$UV_INSTALL_DIR:$UV_TOOL_BIN_DIR:/opt/venv/bin:$PATH"
 # Set noninteractive mode for apt-get
 ENV DEBIAN_FRONTEND=noninteractive
-# Install 'sudo' as it's required in scripts
-RUN apt -y update && apt -y upgrade && apt -y install sudo
+# Install sudo & curl as it's required in scripts
+RUN apt -y update && apt -y upgrade && apt -y install sudo curl
+# For WASM build, install nvm & node
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh | bash
+ENV NVM_DIR=/root/.nvm
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
 # Dev env setup
 # Setup the project
 COPY ./setup.sh ./
@@ -57,4 +66,6 @@ RUN chmod -R 777 $CONAN_HOME \
 
 USER $HOST_USER
 WORKDIR /home/$HOST_USER
+# set ENTRYPOINT for reloading nvm-environment
+ENTRYPOINT ["bash", "-c", "source $NVM_DIR/nvm.sh && exec \"$@\"", "--"]
 CMD ["/bin/bash"]
