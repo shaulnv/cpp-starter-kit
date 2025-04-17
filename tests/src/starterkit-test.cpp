@@ -3,7 +3,11 @@
 // project
 #include <starterkit/starterkit.h>
 
-int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
+namespace {
+  int factorial(int number) {  // NOLINT(misc-no-recursion)
+    return number <= 1 ? number : factorial(number - 1) * number;
+  }
+}  // namespace
 
 TEST_CASE("testing the factorial function") {
   CHECK(factorial(1) == 1);
