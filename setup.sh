@@ -16,7 +16,11 @@ trap 'ERROR_CODE=$?; FAILED_COMMAND=$LAST_COMMAND; tput setaf 1; echo "ERROR: co
 root_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 red="\033[0;31m"
 green="\033[0;32m"
+blue="\033[0;34m"
 nc='\033[0m' # No Color
+
+# dependencies versions
+nvm_version=v0.40.2
 
 package-manager-setup() {
   # Set noninteractive mode for apt
@@ -58,8 +62,7 @@ install-dev-tools() {
     git tig vim tree \
     python3 python-is-python3 python3-pip python3-dev python3-venv python3-setuptools \
     clang libc++-dev libc++abi-dev llvm \
-    gdb \
-    nodejs
+    gdb
   install-github-cli
 }
 
@@ -70,6 +73,17 @@ install-build-dependencies() {
     curl build-essential
   # install uv (the Python's package manager used by the project)
   source $root_dir/env/scripts/install_uv.sh
+
+  # wasm target. remove if not needed
+  # see https://github.com/nvm-sh/nvm/releases for the latest version
+  # install nvm & node
+  if ! command -v nvm &>/dev/null; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$nvm_version/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+  fi
+  nvm install node
 }
 
 install-vscode-extensions-dependencies() {
