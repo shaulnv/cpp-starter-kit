@@ -58,8 +58,7 @@ install-dev-tools() {
     git tig vim tree \
     python3 python-is-python3 python3-pip python3-dev python3-venv python3-setuptools \
     clang libc++-dev libc++abi-dev llvm \
-    gdb \
-    nodejs
+    gdb
   install-github-cli
 }
 
@@ -70,6 +69,11 @@ install-build-dependencies() {
     curl build-essential
   # install uv (the Python's package manager used by the project)
   source $root_dir/env/scripts/_install_uv.sh
+
+  # wasm target. remove if not needed
+  # see https://github.com/nvm-sh/nvm/releases for the latest version
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+  nvm install node
 }
 
 install-vscode-extensions-dependencies() {
