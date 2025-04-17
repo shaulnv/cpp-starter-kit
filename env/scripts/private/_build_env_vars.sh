@@ -96,10 +96,12 @@ function _create_env_vars_file() {
 function _create_build_folder() {
   local build_folder=$1
   local build_folder_full=$2
+  local compile_commands_json=$root_dir/build/compile_commands.json
 
   mkdir -p $build_folder_full
-  rm -f $build_folder
+  rm -f $build_folder $compile_commands_json
   ln -sr $build_folder_full $build_folder
+  ln -sr $build_folder_full/compile_commands.json $compile_commands_json
 }
 
 # start
