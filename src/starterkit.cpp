@@ -6,7 +6,17 @@
 // project
 #include "starterkit.h"
 
-int starterkit_lib_answer() { return 42; }
+class StarterkitSky {
+public:
+  StarterkitSky();
+  [[nodiscard]] int answer() const;
+};
+
+namespace {
+  constexpr int answer = 42;
+}
+
+int starterkit_lib_answer() { return answer; }
 
 void starterkit_lib() {
 #ifdef NDEBUG
@@ -15,6 +25,7 @@ void starterkit_lib() {
   std::cout << "starterkit/0.0.1: Hello World Debug!\n";
 #endif
 
+  std::cout << "shaul\n";
 // ARCHITECTURES
 #ifdef _M_X64
   std::cout << "  starterkit/0.0.1: _M_X64 defined\n";
@@ -118,6 +129,6 @@ void starterkit_lib() {
 
 void starterkit_lib_print_vector(const std::vector<std::string> &strings) {
   for (auto const &str : strings) {
-    std::cout << "starterkit/0.0.1 " << str << std::endl;
+    std::cout << "starterkit/0.0.1 " << str << '\n';
   }
 }
