@@ -9,12 +9,6 @@ function(add_post_build_copy target source_file destination_file)
     COMMENT "Copying ${source_file} to ${destination_file} after building ${target}")
 endfunction()
 
-function(install_compile_commands_json target)
-  set(compile_commands "${CMAKE_BINARY_DIR}/compile_commands.json")
-  set(build_root_folder ${PROJECT_SOURCE_DIR}/build)
-  add_post_build_copy(${target} ${compile_commands} ${build_root_folder})
-endfunction()
-
 function(notice_message message)
   # Formatted text is saved in COLOR_FORMATTED_TEXT
   colorformattext(BOLD COLOR CYAN "NOTICE:")
