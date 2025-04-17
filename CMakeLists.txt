@@ -12,6 +12,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
 option(CTEST_OUTPUT_ON_FAILURE "On test failure, print out its full output" ON)
 option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
+option(USE_CLANG_TIDY "Use clang-tidy" OFF)
 
 # set(CMAKE_CXX_STANDARD 17) # this is set at env/profiles/cpp.profile
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -28,9 +29,8 @@ include(env/cmake/PreventInSourceBuilds.cmake)
 include(env/cmake/tools.cmake)
 include(env/cmake/helpers.cmake)
 
-# deps
-# use CPM for import of internal cmake based projects
-# use conanfile.py/requires for import of 3rd party projects
+# Prefer using conanfile.py('requires' clause) for import of 3rd party projects
+# If you only have a CMake based dependency, you can use CPM to import it
 # Example:
 # CPMAddPackage(
 #   NAME ibis
@@ -40,6 +40,7 @@ include(env/cmake/helpers.cmake)
 
 # Create config.h from config.h.in
 configure_file(./src/config.h.in ${PROJECT_BINARY_DIR}/starterkit/config.h)
+
 # Configure version.h
 configure_file(./src/version.h.in ${PROJECT_BINARY_DIR}/starterkit/version.h)
 
