@@ -43,7 +43,7 @@ The roject currently supports both native (Linux) and WebAssembly
    Minimal dependencies: `git`, `curl`, and a C++ compiler.
 2. Activate the [virtual environment](https://www.youtube.com/watch?app=desktop&v=Y21OR1OPC9A): `source ./activate.sh` (run this in each new shell session).
 3. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm]` (defaults are `--debug`, `--profile=native`).
-   You'l need to the give `build.sh` the flags only once, as it caches them.
+   You'l need to give `build.sh` the flags only once, as it caches them.
 4. Run the CLI: `./run.sh [-h]`.
 5. Run tests: `./test.sh`.
 6. Dependencies:
@@ -59,19 +59,25 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 
 ### Workspace
 
+> NOTE: Run `>CMake ...` means to run the command `CMake: ...` from the VSCode's Command Palette (`Ctrl+P`)
+
 1. Open `./starterkit.code-workspace` in VS Code.
 2. Run `./build.sh` once to generate the CMake build folder.
-3. From the Command Palette (`Ctrl+P`) run `CMake: Set Build Target`
-   Choose the target to build (recommended: `all`).
-4. From the Command Palette (`Ctrl+P`) run `CMake: Set Launch/Debug Target`
-   Select current target:
-   - `starterkit-cli` to run/debug the CLI.
-   - `starterkit-tests` to run/debug the unit-tests.
-5. With the selected target you can:
+   > NOTE: if you have issues with the next step, try refreshing VSCode: `>Developer: Reload Window`
+3. Choose what to run/debug:
+   - `>CMake: Select Configure Preset`
+     Choose the `conan-release` or `conan-debug` preset.
+   - `>CMake: Set Build Target`
+     Choose the target to build (recommended: `all`).
+   - `>CMake: Set Launch/Debug Target`
+     Select the _current_ target:
+     - `starterkit-cli` to run/debug the `CLI`.
+     - `starterkit-tests` to run/debug the `unit-tests`.
+4. With the selected target you can:
    1. Press `F7` to build
    2. Press `Ctrl+F5` to run
    3. Press `F5` to debug
-6. Run `CMake: Reveal Test Explorer` to run specific tests. use the `TestMate C++` section.
+5. Run `>CMake: Reveal Test Explorer` to run specific tests. use the `TestMate C++` section.
    - Start/Stop continues test watch on each build (the ![eye icon](doc/res/vscode-tests-continues-watch-eye-icon.png) icon):
       ![start/stop continues test watch](doc/res/vscode-tests-continues-watch.png)
    - Go to `starterkit-test.cpp`, hover ovet the green ![Play](doc/res/vscode-test-case-v.png)/![Play](doc/res/vscode-test-case-play.png) to the left of each test:
@@ -83,7 +89,7 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 ### Dev Container
 
 1. Open the project in VS Code.
-2. From the Command Palette (`Ctrl+Shift+P`) run `Dev Container: Open workspace in container`.
+2. From the Command Palette (`Ctrl+Shift+P`) run `>Dev Container: Open workspace in container`.
    This will start a container with the project opened, with all the dependencies installed.
    First time may take some time (Docker's image build will take about 2 minutes).
    You can use it to develop the project without the need to install the dependencies on your machine.
