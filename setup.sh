@@ -36,7 +36,7 @@ sudo apt update -y
 sudo apt install -y --no-install-recommends \
   sudo curl wget gnupg tig vim \
   python3 python-is-python3 python3-pip python3-dev python3-venv python3-setuptools \
-  git build-essential clang gdb \
+  git build-essential clang libc++-dev libc++abi-dev llvm gdb \
   nodejs
 
 install-github-cli
