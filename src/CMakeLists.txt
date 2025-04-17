@@ -13,7 +13,6 @@ target_include_directories(
 target_compile_options(starterkit PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 target_link_libraries(starterkit PRIVATE fmt::fmt)
 add_library(starterkit::starterkit ALIAS starterkit)
-install_compile_commands_json(starterkit)
 
 install(TARGETS starterkit)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/ DESTINATION include)

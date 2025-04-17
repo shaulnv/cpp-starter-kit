@@ -11,10 +11,13 @@ project(
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
 option(CTEST_OUTPUT_ON_FAILURE "On test failure, print out its full output" ON)
-option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 option(USE_CLANG_TIDY "Use clang-tidy" OFF)
 
-# set(CMAKE_CXX_STANDARD 17) # this is set at env/profiles/cpp.profile
+# unfortunately, it is not always worked from here
+# so this is set at env/profiles/base.profile
+# option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
+
+# set(CMAKE_CXX_STANDARD 17) # this is set at env/profiles/base.profile
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
