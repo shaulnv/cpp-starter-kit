@@ -1,0 +1,199 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c192aa6..b37006d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.24...3.30)
++cmake_minimum_required(VERSION 3.24.0...4.0.0)
+ 
+ project(
+   nv_bridge
+@@ -25,6 +25,11 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
+ set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
+ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+ 
++# since we don't use modules, we don't need to scan for them
++# the usage of this option, make us depend on clang-scan-build
++# which is not always available
++set(CMAKE_CXX_SCAN_FOR_MODULES 0)  
++
+ # cmake modules
+ include(CTest)
+ include(env/cmake/CPM.cmake)
+diff --git a/activate.sh b/activate.sh
+index 18fc80f..8016b03 100644
+--- a/activate.sh
++++ b/activate.sh
+@@ -35,7 +35,6 @@ verify_prerequisites() {
+         set -o pipefail
+ 
+         is_tool_exits curl "curl"
+-        is_tool_exits g++ "g++" || is_tool_exits clang "clang"
+     ) || {
+         exit_code=$?
+         echo -e "${red}ERROR: Pre-requisites are not met.\n\tDependencies are: curl, C++ compiler.\n\tBest: run ./setup.sh${nc}"
+diff --git a/build.sh b/build.sh
+index ca1fda4..df3d742 100755
+--- a/build.sh
++++ b/build.sh
+@@ -1,3 +1,4 @@
++
+ #!/bin/bash
+ 
+ source ./env/scripts/private/_build_env_vars.sh "$@" || exit $?
+@@ -9,7 +10,7 @@ if [[ "$clean" == "true" ]]; then
+   rm -rf $build_folder/*
+ fi
+ if [ ! -f "$build_folder/CMakeCache.txt" ]; then
+-  conan build . --build=missing -pr:b ./env/profiles/native.profile -pr:h ./env/profiles/$profile.profile -s:a build_type=$build_type
++  conan build . --build=missing -pr:a ./env/profiles/$profile.profile -s:a build_type=$build_type
+ else
+   cmake --build $build_folder
+ fi
+diff --git a/env/profiles/clang.profile b/env/profiles/clang.profile
+index 99ee5f9..b942886 100644
+--- a/env/profiles/clang.profile
++++ b/env/profiles/clang.profile
+@@ -6,5 +6,4 @@ compiler.version=14
+ compiler.libcxx=libc++
+ 
+ [conf]
+-tools.cmake.cmaketoolchain:generator=Ninja
+ tools.build:compiler_executables={"c": "clang", "cpp": "clang++"}
+diff --git a/env/profiles/zig.profile b/env/profiles/zig.profile
+new file mode 100644
+index 0000000..9037c38
+--- /dev/null
++++ b/env/profiles/zig.profile
+@@ -0,0 +1,29 @@
++include(base.profile)
++
++[settings]
++compiler=clang
++compiler.version=19
++# compiler.libcxx=libc++ # zig ignores this, and uses its own
++
++[conf]
++user:custom_compiler=zig
++tools.info.package_id:confs=["user:custom_compiler"]
++tools.build:compiler_executables={"c": "zigcc", "cpp": "zigpp"}
++tools.cmake.cmaketoolchain:extra_variables*={"CMAKE_AR": {"value": "zigar", "cache": True, "type": "PATH", "docstring": "zig C ar", "force": True}}
++tools.cmake.cmaketoolchain:extra_variables*={"CMAKE_CXX_COMPILER_AR": {"value": "zigar", "cache": True, "type": "PATH", "docstring": "zig C++ ar", "force": True}}
++tools.cmake.cmaketoolchain:extra_variables*={"CMAKE_RANLIB": {"value": "zigrunlib", "cache": True, "type": "PATH", "docstring": "zig C runlib", "force": True}}
++tools.cmake.cmaketoolchain:extra_variables*={"CMAKE_CXX_COMPILER_RANLIB": {"value": "zigrunlib", "cache": True, "type": "PATH", "docstring": "zig C++ runlib", "force": True}}
++tools.build:cxxflags=+["-static"]
++
++# SHAUL BIGTODO:
++# zig cc:
++# Ubuntu deps: 
++# ```shell
++# sudo apt install curl, xz-utils
++# wget https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz
++# tar -xvf zig-linux-x86_64-0.14.0.tar.xz
++# mv zig-linux-x86_64-0.14.0 root
++# mv root/zig /usr/local/bin/zig
++# mv root/lib /usr/local/lib/zig
++# export PATH=/usr/local/bin:$PATH
++# ``` 
+\ No newline at end of file
+diff --git a/env/scripts/private/_build_env_vars.sh b/env/scripts/private/_build_env_vars.sh
+index 97500a2..efc2322 100644
+--- a/env/scripts/private/_build_env_vars.sh
++++ b/env/scripts/private/_build_env_vars.sh
+@@ -96,11 +96,20 @@ function _create_env_vars_file() {
+ function _create_build_folder() {
+   local build_folder=$1
+   local build_folder_full=$2
+-  local compile_commands_json=$root_dir/build/compile_commands.json
+ 
+   mkdir -p $build_folder_full
+-  rm -f $build_folder $compile_commands_json
++  rm -f $build_folder
+   ln -sr $build_folder_full $build_folder
++}
++
++# Workaround for clangd search of compile_commands.json
++# clangd search in 'known' folders, and apperently where CMake creates it, is not one of them
++# so we need to link it to the root build folder
++function _workaround_clangd_compile_commands_issue() {
++  local build_folder_full=$1
++  local compile_commands_json=$root_dir/build/compile_commands.json
++
++  rm -f $compile_commands_json
+   ln -sr $build_folder_full/compile_commands.json $compile_commands_json
+ }
+ 
+@@ -111,3 +120,4 @@ activate_venv || return $?
+ _create_env_vars_file "$@"
+ load_env_vars
+ _create_build_folder $build_folder $build_folder_full
++_workaround_clangd_compile_commands_issue $build_folder_full
+diff --git a/include/nv_bridge/nv_bridge.h b/include/nv_bridge/nv_bridge.h
+index b7603a0..008cd35 100644
+--- a/include/nv_bridge/nv_bridge.h
++++ b/include/nv_bridge/nv_bridge.h
+@@ -3,6 +3,6 @@
+ #include <string>
+ #include <vector>
+ 
+-void nv_bridge_lib();
+-void nv_bridge_lib_print_vector(const std::vector<std::string> &strings);
+-int nv_bridge_lib_answer();
++__attribute__((visibility("default"))) void nv_bridge_lib();
++__attribute__((visibility("default"))) void nv_bridge_lib_print_vector(const std::vector<std::string> &strings);
++__attribute__((visibility("default"))) int nv_bridge_lib_answer();
+diff --git a/tools/bin/zigar b/tools/bin/zigar
+new file mode 100755
+index 0000000..a5a2336
+--- /dev/null
++++ b/tools/bin/zigar
+@@ -0,0 +1 @@
++zig ar "$@"
+diff --git a/tools/bin/zigcc b/tools/bin/zigcc
+new file mode 100755
+index 0000000..5771385
+--- /dev/null
++++ b/tools/bin/zigcc
+@@ -0,0 +1 @@
++zig cc -target x86_64-linux-musl "$@"
+diff --git a/tools/bin/zigpp b/tools/bin/zigpp
+new file mode 100755
+index 0000000..d881eaa
+--- /dev/null
++++ b/tools/bin/zigpp
+@@ -0,0 +1,27 @@
++#!/bin/sh
++
++# Function to filter out unwanted parameters from the list of arguments
++filter_params() {
++    # First argument is the unwanted parameter
++    unwanted="$1"
++    shift
++    
++    # Process remaining arguments
++    while [ $# -gt 0 ]; do
++        if [ "$1" != "$unwanted" ]; then
++            printf '%s ' "$1"
++        fi
++        shift
++    done
++}
++
++# Filter out zig c++ unused parameters 
++# See https://ziggit.dev/t/zig-c-and-exception-abi-on-linux/5471/5
++arguments=$(filter_params "-stdlib=libc++" "$@")
++arguments=$(filter_params "-stdlib=libstdc++" $arguments)
++arguments=$(filter_params "-unwindlib=libunwind" $arguments)
++arguments=$(filter_params "-rtlib=compiler-rt" $arguments)
++arguments=$(filter_params "-fuse-ld=ld" $arguments)
++
++# Wun zig c++ with the filtered arguments
++zig c++ -target x86_64-linux-musl $arguments
+diff --git a/tools/bin/zigrunlib b/tools/bin/zigrunlib
+new file mode 100755
+index 0000000..8435c3f
+--- /dev/null
++++ b/tools/bin/zigrunlib
+@@ -0,0 +1 @@
++zig ranlib "$@"
+\ No newline at end of file
