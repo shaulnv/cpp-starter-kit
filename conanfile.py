@@ -52,6 +52,7 @@ class starterkit_libRecipe(ConanFile):
     def build(self):
         cmake = CMake(self)
         cmake.configure()
+        cmake.configure()  # cli_args=["--debug-output", "--trace-expand"]
         cmake.build()
 
     def package(self):
