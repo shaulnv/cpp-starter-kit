@@ -19,7 +19,7 @@ class starterkit_libRecipe(ConanFile):
     options = {"shared": [True, False], "fPIC": [True, False]}
     default_options = {"shared": False, "fPIC": True}
 
-    requires = "fmt/11.0.2", "cxxopts/3.1.1"
+    requires = "fmt/11.0.2", "structopt/0.1.3", "magic_enum/0.9.2"
     test_requires = "doctest/2.4.11"
 
     # Sources are located in the same place as this recipe, copy them to the recipe
