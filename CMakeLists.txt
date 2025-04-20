@@ -12,12 +12,12 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 option(ENABLE_TEST_COVERAGE "Enable test coverage" OFF)
 option(CTEST_OUTPUT_ON_FAILURE "On test failure, print out its full output" ON)
 option(USE_CLANG_TIDY "Use clang-tidy" OFF)
+option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 
-# unfortunately, it is not always worked from here
-# so this is set at env/profiles/base.profile
-# option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
-
-# set(CMAKE_CXX_STANDARD 17) # this is set at env/profiles/base.profile
+# C++ standard
+#   keep in sync with 'compiler.cppstd=' at env/profiles/base.profile
+#   this is set also in here so a CMake consumer of this project will get it automatically
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
@@ -33,7 +33,8 @@ include(env/cmake/tools.cmake)
 include(env/cmake/helpers.cmake)
 
 # Prefer using conanfile.py('requires' clause) for import of 3rd party projects
-# If you only have a CMake based dependency, you can use CPM to import it
+# If you only have a CMake based dependency, use CPM to import it
+# See: https://github.com/cpm-cmake/CPM.cmake for usage
 # Example:
 # CPMAddPackage(
 #   NAME ibis
