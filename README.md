@@ -39,27 +39,26 @@ The roject currently supports both native (Linux) and WebAssembly
 
 ## Build & Dev
 
-1. Install dependencies: `./setup.sh`.
-   Minimal dependencies: `git`, `curl`, and a C++ compiler.
+1. Install dependencies:
+   - Development Environment: [`./setup.sh`](./setup.sh).
+   - Build Environment: only `curl` and a `C++ compiler` ([`./build.sh`](./build.sh) will install the rest).
 2. Activate the [virtual environment](https://www.youtube.com/watch?app=desktop&v=Y21OR1OPC9A): `source ./activate.sh` (run this in each new shell session).
-3. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm]` (defaults are `--debug`, `--profile=native`).
-   You'l need to give `build.sh` the flags only once, as it caches them.
+3. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm|clang-tidy]`
+   > NOTE: Flags are cached, so you can give them only when changing them.  
+   > Defaults are: `--debug`, `--profile=native`.  
 4. Run the CLI: `./run.sh [-h]`.
 5. Run tests: `./test.sh`.
-6. Dependencies:
-The [conanfile.py](./conanfile.py) is the high level build script.
-To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.
-After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).
-You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
-[conanfile.py](./conanfile.py#L22),
-[CMakeLists.txt](./src/CMakeLists.txt#L1), and then in
-[code](./cli/src/main-cli.cpp#L29).
+6. Dependencies:  
+   The [conanfile.py](./conanfile.py) is the high level build script.  
+   To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.  
+   After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).  
+   You can see an example of the [fmt](https://fmt.dev/11.0/) library, in: [conanfile.py](./conanfile.py#L22), [CMakeLists.txt](./src/CMakeLists.txt#L1), and then in [code](./cli/src/main-cli.cpp#L40).
 
 ## VS Code Integration
 
 ### Workspace
 
-> NOTE: Run `>CMake ...` means to run the command `CMake: ...` from the VSCode's Command Palette (`Ctrl+P`)
+> NOTE: Run `>CMake ...` means to run the command `CMake: ...` from the VSCode's Command Palette (`Ctrl+Shift+P`)
 
 1. Open `./starterkit.code-workspace` in VS Code.
 2. Run `./build.sh` once to generate the CMake build folder.
@@ -78,9 +77,9 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
    2. Press `Ctrl+F5` to run
    3. Press `F5` to debug
 5. Run `>CMake: Reveal Test Explorer` to run specific tests. use the `TestMate C++` section.
-   - Start/Stop continues test watch on each build (the ![eye icon](doc/res/vscode-tests-continues-watch-eye-icon.png) icon):
+   - Start/Stop continues test watch on each build (the ![eye icon](doc/res/vscode-tests-continues-watch-eye-icon.png) icon):  
       ![start/stop continues test watch](doc/res/vscode-tests-continues-watch.png)
-   - Go to `starterkit-test.cpp`, hover ovet the green ![Play](doc/res/vscode-test-case-v.png)/![Play](doc/res/vscode-test-case-play.png) to the left of each test:
+   - Go to `starterkit-test.cpp`, hover ovet the green ![Play](doc/res/vscode-test-case-v.png)/![Play](doc/res/vscode-test-case-play.png) to the left of each test:  
       ![run/debug a test case](doc/res/vscode-test-case.png)
    - Some shortcuts:
       - `Ctrl+; Ctrl+C`: Debug test at cursor
@@ -89,15 +88,15 @@ You can see an example of the [fmt](https://fmt.dev/11.0/) library, in:
 ### Dev Container
 
 1. Open the project in VS Code.
-2. From the Command Palette (`Ctrl+Shift+P`) run `>Dev Container: Open workspace in container`.
-   This will start a container with the project opened, with all the dependencies installed.
-   First time may take some time (Docker's image build will take about 2 minutes).
-   You can use it to develop the project without the need to install the dependencies on your machine.
+2. Run `>Dev Container: Open workspace in container`.  
+   This will start a container with the project opened, with all the dependencies installed.  
+   First time may take some time (Docker's image build will take about 2 minutes).  
+   You can use it to develop the project without the need to install the dependencies on your machine.  
 
 ### GitHub Codespaces
 
-1. You can use GitHub Codespaces to develop the project.
-2. Just go to your GitHub repo and click on the `Code` button.
+1. You can use [GitHub Codespaces](https://github.com/features/codespaces) to develop the project.
+2. Just go to your GitHub repo and click on the `Code` button.  
    ![GitHub Codespaces](doc/res/github-codespaces.png)
 
 ## Small Features
