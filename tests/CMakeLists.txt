@@ -28,3 +28,9 @@ if(ENABLE_TEST_COVERAGE)
   target_compile_options(starterkit-tests PUBLIC -O0 -g -fprofile-arcs -ftest-coverage)
   target_link_options(starterkit-tests PUBLIC -fprofile-arcs -ftest-coverage)
 endif()
+
+# Set target properties to prefer static linking
+set_target_properties(starterkit-tests PROPERTIES
+    LINK_SEARCH_START_STATIC ON
+    LINK_SEARCH_END_STATIC ON
+)

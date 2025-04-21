@@ -25,6 +25,11 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
+# Force static linking by setting the appropriate flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+
 # cmake modules
 include(CTest)
 include(env/cmake/CPM.cmake)
