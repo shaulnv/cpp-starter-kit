@@ -25,6 +25,15 @@ set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
+# RPATH:
+# Set up runtime path (rpath) handling for shared libraries
+# rpath specifies directories to search for dependent shared libraries (.so files) at runtime
+# '$ORIGIN' ensures the rpath is set relative to the binary's location
+# We set it to standard locations:
+#   executables can be anywhere, but standard install is in bin/
+#   shared libraries are in lib/, ../lib/ or right by the executable
+set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/lib $ORIGIN/../lib)
+
 # cmake modules
 include(CTest)
 include(env/cmake/CPM.cmake)
