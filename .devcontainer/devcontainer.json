@@ -11,7 +11,8 @@
           "CODESPACES": "${localEnv:CODESPACES}",
           "USERNAME": "${localEnv:USER:ubuntu}",
           "GITHUB_USER": "${localEnv:GITHUB_USER}"
-        }
+        },
+        "runArgs": ["--network=host"]
       },
       "mounts": [
         // Map the .ssh & .config folder into the container to facilitate git operations within the
@@ -23,7 +24,7 @@
       "customizations": {
         "vscode": {
           "settings": {
-            "python.defaultInterpreterPath": "$/opt/venv/bin/python"
+            "python.defaultInterpreterPath": "/v/.venv/bin/python"
           },
           "extensions": [
             "ms-python.debugpy",
@@ -40,7 +41,7 @@
       "containerUser": "${localEnv:USER}",
       "updateRemoteUserUID": true,
       // Run commands after the container is created.
-      "postCreateCommand": "bash -c \". ./activate.sh\""
+      // "postCreateCommand": "bash -c \". ./activate.sh\""
       // Features to add to the dev container. More info: https://containers.dev/features.
       // "features": {},
       // Use 'forwardPorts' to make a list of ports inside the container available locally.

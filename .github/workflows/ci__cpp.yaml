@@ -1,0 +1,38 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+        build_type: [Debug, Release]
+        include:
+          - compiler: gcc
+            cxx: g++
+            cc: gcc
+          - compiler: clang
+            cxx: clang++
+            cc: clang
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ${{ matrix.cc }} ${{ matrix.cxx }} curl build-essential clang libc++-dev libc++abi-dev llvm
+
+    - name: Build
+      run: ./build.sh --profile=
+
+    - name: Run tests
+      run: |
+        cd build
+        ctest --output-on-failure
