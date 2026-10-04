@@ -10,8 +10,6 @@ SHELL ["/bin/bash", "-c"]
 
 # An env variable to identify if you are in the dev-container
 ENV STARTERKIT_DEVCONTAINER=1
-# Conan's cache directory
-ENV CONAN_HOME=/.conan2
 # uv's tool directories
 ENV UV_BASE_DIR=/usr/local/share/uv
 ENV UV_INSTALL_DIR=$UV_BASE_DIR/bin
@@ -56,8 +54,8 @@ RUN set -euo pipefail; \
     && chmod 0440 "/etc/sudoers.d/${HOST_USER}" \
     && chsh -s /bin/bash "${HOST_USER}" \
     && chsh -s /bin/bash root \
-    && mkdir -p "${host_home}/.ssh" "${CONAN_HOME}" \
-    && chown -R "${HOST_USER}:${USER_GID}" "${host_home}/.ssh" "${CONAN_HOME}" "${UV_BASE_DIR}" \
+    && mkdir -p "${host_home}/.ssh" \
+    && chown -R "${HOST_USER}:${USER_GID}" "${host_home}/.ssh" "${UV_BASE_DIR}" \
     && chmod 700 "${host_home}/.ssh" \
     && ln -snf "${host_home}/.ssh" /root/.ssh
 
