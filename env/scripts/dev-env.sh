@@ -29,7 +29,7 @@ _run_dev_env_container() {
   local container_home="$HOME/.starterkit-dev-env-home"
   local uv_cache="$HOME/.local/share/uv"
   local is_mac=$([[ "$(uname)" == "Darwin" ]] && echo 1 || echo 0)
-  local conan_cache=${CONAN_USER_HOME:-$container_home/.conan2}
+  local conan_cache=${CONAN_HOME:-$container_home/.conan2}
   local work="${STARTERKIT_DEV_WORK_DIR:-$(realpath "$root_dir/../")}"
 
   mkdir -p "$container_home" "$uv_cache" "$conan_cache" "$container_home/work" "$container_home/.ssh"
