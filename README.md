@@ -46,6 +46,7 @@ The roject currently supports both native (Linux) and WebAssembly
 3. Build the project: `./build.sh [--clean] [--release | --debug] [--profile=native|wasm|clang-tidy]`
    > NOTE: Flags are cached, so you can give them only when changing them.  
    > Defaults are: `--debug`, `--profile=native`.  
+   > `./build.sh --help` lists all flags.  
 4. Run the CLI: `./run.sh [-h]`.
 5. Run tests: `./test.sh`.
 6. Dependencies:  
@@ -53,6 +54,24 @@ The roject currently supports both native (Linux) and WebAssembly
    To add 3rd party C++ packages, set it in the ['requires'](./conanfile.py#L22) attribute.  
    After you add them there, you can use them in `CMakeLists.txt` files with standard [find_package](https://www.youtube.com/watch?v=1HjAYqcJwV8).  
    You can see an example of the [fmt](https://fmt.dev/11.0/) library, in: [conanfile.py](./conanfile.py#L22), [CMakeLists.txt](./src/CMakeLists.txt#L1), and then in [code](./cli/src/main-cli.cpp#L40).
+
+## Code Quality
+
+[pre-commit](https://pre-commit.com/) runs formatters and linters (clang-format, black, isort, typos, ...) on every commit:
+
+```shell
+source ./activate.sh        # once per shell
+pre-commit install          # once per clone: run the hooks on each `git commit`
+pre-commit run --all-files  # run everything on demand
+```
+
+Never bypass the hooks with `--no-verify`; when a formatter rewrites a file, re-stage it and commit again.
+
+## Contributing & AI Agents
+
+[AGENTS.md](./AGENTS.md) holds the project's conventions: C++ style, comment philosophy,
+shell rules, and the git/commit workflow (`(+)` add, `(-)` fix, `(~)` refactor, `(*)` alteration, `(=)` aesthetic).
+[CLAUDE.md](./CLAUDE.md) points AI coding agents at it. Keep it as your project's guide: edit it to match your own conventions.
 
 ## VS Code Integration
 
