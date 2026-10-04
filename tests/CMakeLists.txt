@@ -16,10 +16,8 @@ else()
   doctest_discover_tests(starterkit-tests)
 endif()
 
-# enable compiler warnings
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  target_compile_options(starterkit-tests PUBLIC -Wall -Wpedantic -Wextra -Werror)
-elseif(MSVC)
+# GCC/Clang warnings are set globally in the root CMakeLists.txt
+if(MSVC)
   target_compile_options(starterkit-tests PUBLIC /W4 /WX)
   target_compile_definitions(starterkit-tests PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
 endif()

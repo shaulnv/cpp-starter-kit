@@ -127,8 +127,8 @@ void starterkit_lib() {
 #endif
 }
 
-void starterkit_lib_print_vector(const std::vector<std::string> &strings) {
-  for (auto const &str : strings) {
+void starterkit_lib_print_vector(const std::vector<std::string>& strings) {
+  for (auto const& str : strings) {
     std::cout << "starterkit/0.0.1 " << str << '\n';
   }
 }

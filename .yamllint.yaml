@@ -1,0 +1,26 @@
+extends: default
+
+rules:
+  line-length:
+    max: 140
+    level: warning
+
+  document-start: disable
+
+  truthy:
+    allowed-values: ['true', 'false', 'on', 'off', 'yes', 'no']
+
+  comments-indentation: disable
+
+  empty-values:
+    forbid-in-block-mappings: false
+    forbid-in-flow-mappings: false
+
+  # clang-format/clang-tidy configs align columns in flow mappings
+  braces: disable
+  commas: disable
+  indentation:
+    indent-sequences: consistent
+
+ignore: |
+  .clang-format

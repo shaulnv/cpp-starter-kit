@@ -5,6 +5,47 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "(gdb) Attach to target (CMake Target)",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "${command:cmake.launchTargetPath}",
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "CMake Target (with args)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": [
+        "${input:launchArgs}"
+      ],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
       "name": "CMake Target",
       "type": "cppdbg",
       "request": "launch",
@@ -42,6 +83,13 @@
         "-s:a",
         "build_type=Debug"
       ]
-    },
+    }
+  ],
+  "inputs": [
+    {
+      "id": "launchArgs",
+      "type": "promptString",
+      "description": "Enter launch arguments"
+    }
   ]
 }

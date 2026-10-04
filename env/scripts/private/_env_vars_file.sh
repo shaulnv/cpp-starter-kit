@@ -12,7 +12,12 @@ update_env_vars_file() {
   # Check if key already exists in the file
   if grep -q "^$key=" "$file" >/dev/null 2>&1; then
     # If key exists, replace the value using | as delimiter to avoid issues with paths
-    sed -i "s|^$key=.*|$key=$value|" "$file"
+    # Cross-platform sed -i compatibility
+    if [[ $OSTYPE == "darwin"* ]]; then
+      sed -i '' "s|^$key=.*|$key=$value|" "$file"
+    else
+      sed -i "s|^$key=.*|$key=$value|" "$file"
+    fi
   else
     # If key does not exist, add it to the end of the file
     echo "$key=$value" >>"$file"

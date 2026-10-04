@@ -15,3 +15,30 @@ function(notice_message message)
   # Print the formatted text and append unformatted text
   message(STATUS "${COLOR_FORMATTED_TEXT} ${message}")
 endfunction()
+
+# Sets OUT_VAR to TRUE when running on Linux with a kernel >= REQUIRED_VERSION (e.g. "5.10").
+function(linux_kernel_at_least REQUIRED_VERSION OUT_VAR)
+  set(${OUT_VAR}
+      FALSE
+      PARENT_SCOPE)
+  if(NOT CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    return()
+  endif()
+
+  execute_process(
+    COMMAND uname -r
+    OUTPUT_VARIABLE kernel_version
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE uname_result)
+  if(NOT uname_result EQUAL 0)
+    return()
+  endif()
+
+  # 5.10.0-23-amd64 -> 5.10.0
+  string(REGEX MATCH "^[0-9]+\\.[0-9]+(\\.[0-9]+)?" kernel_version_numeric "${kernel_version}")
+  if(kernel_version_numeric VERSION_GREATER_EQUAL REQUIRED_VERSION)
+    set(${OUT_VAR}
+        TRUE
+        PARENT_SCOPE)
+  endif()
+endfunction()

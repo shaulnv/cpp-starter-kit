@@ -1,6 +1,7 @@
 {
 	"folders": [
 		{
+			"name": "starterkit",
 			"path": "."
 		}
 	],
@@ -30,14 +31,52 @@
 		"[python]": {
 			"editor.defaultFormatter": "ms-python.autopep8"
 		},
-		"cmakeFormat.exePath": "{workspaceFolder}/.venv/bin/cmake-format",
+		"cmakeFormat.exePath": "${workspaceFolder}/.venv/bin/cmake-format",
 		"C_Cpp.clang_format_path": "${workspaceFolder}/.venv/bin/clang-format",
 		"cmake.cmakePath": "${workspaceFolder}/.venv/bin/cmake",
 		"cmake.clearOutputBeforeBuild": true,
 		"cmake.automaticReconfigure": true,
 		"cmake.sourceDirectory": "${workspaceFolder}",
 		"cmake.buildDirectory": "${workspaceFolder}/build/${buildType}",
-		"cmake.generator": "Ninja"
+		"cmake.generator": "Ninja",
+		"terminal.integrated.profiles.linux": {
+			"bash-with-project": {
+				"path": "bash",
+				"icon": "rocket",
+				"args": [
+					"--rcfile",
+					"${workspaceFolder:starterkit}/.vscode/.vscode-bash-source.sh"
+				]
+			}
+		},
+		"terminal.integrated.defaultProfile.linux": "bash-with-project",
+		"terminal.integrated.profiles.osx": {
+			"zsh-with-project": {
+				"path": "/usr/bin/env",
+				"icon": "rocket",
+				"args": [
+					"ZDOTDIR=${workspaceFolder}/.vscode",
+					"zsh"
+				]
+			}
+		},
+		"terminal.integrated.defaultProfile.osx": "zsh-with-project",
+		"C_Cpp.codeAnalysis.exclude": {
+			"${workspaceFolder}/build/**": true
+		},
+		"testMate.cpp.test.advancedExecutables": [
+			{
+				"pattern": "build/current/**/*{test,Test,TEST}*"
+			}
+		],
+		"clangd.arguments": [
+			"--enable-config"
+		],
+		"clangd.path": "${workspaceFolder}/.venv/bin/clangd",
+		"files.associations": {
+			"*.tcc": "cpp",
+			"*.ipp": "cpp"
+		}
 	},
 	"extensions": {
 		"recommendations": [

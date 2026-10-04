@@ -1,0 +1,4 @@
+# VSCode specific
+.zcompdump
+.zcompcache
+.zsh_history

@@ -26,3 +26,6 @@ jobs:
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
+        env:
+          # hadolint is a system hook and is not installed on the runner
+          SKIP: hadolint

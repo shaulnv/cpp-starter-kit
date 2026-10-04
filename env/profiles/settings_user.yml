@@ -1,0 +1,4 @@
+os:
+    Linux:
+        id: [null, ubuntu, rhel, amzn, debian]
+        glibc_version: [null, 2.31, 2.34, 2.35, 2.36, 2.39]

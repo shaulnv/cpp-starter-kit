@@ -30,3 +30,9 @@ misc:
       command_case: unchanged
     CPMAddPackage:
       command_case: unchanged
+
+markup:
+  # Comments are kept verbatim; reflowing mangles ASCII layouts
+  enable_markup: false
+  first_comment_is_literal: true
+  literal_comment_pattern: ".*"
