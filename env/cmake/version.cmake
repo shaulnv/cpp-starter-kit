@@ -1,13 +1,10 @@
 # Project version resolution. Include before project() and call set_project_version().
 #
-# Precedence (first hit wins):
-#   1. STARTERKIT_VERSION environment variable (build.sh --version exports it)
-#   2. -DSTARTERKIT_VERSION=...
-#   3. latest reachable git tag 'vX.Y.Z[.W]'
-#   4. 0.0.1
+# Precedence (first hit wins): 1. STARTERKIT_VERSION environment variable (build.sh --version exports it) 2.
+# -DSTARTERKIT_VERSION=... 3. latest reachable git tag 'vX.Y.Z[.W]' 4. 0.0.1
 #
-# Outputs (parent scope): STARTERKIT_VERSION_SEMANTIC; cache bools
-# STARTERKIT_IS_PRODUCTION_VERSION / STARTERKIT_IS_NIGHTLY_VERSION, consumed by cpack.cmake.
+# Outputs (parent scope): STARTERKIT_VERSION_SEMANTIC; cache bools STARTERKIT_IS_PRODUCTION_VERSION /
+# STARTERKIT_IS_NIGHTLY_VERSION, consumed by cpack.cmake.
 
 function(set_project_version)
   set(STARTERKIT_VERSION

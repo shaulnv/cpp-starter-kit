@@ -88,8 +88,8 @@ macro(cpm_set_policies)
     set(CMAKE_POLICY_DEFAULT_CMP0126 NEW)
   endif()
 
-  # The policy uses the download time for timestamp, instead of the timestamp in the archive. This
-  # allows for proper rebuilds when a projects url changes
+  # The policy uses the download time for timestamp, instead of the timestamp in the archive. This allows for proper
+  # rebuilds when a projects url changes
   if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
     set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
@@ -190,9 +190,9 @@ function(cpm_package_name_and_ver_from_url url outName outVer)
       # We couldn't find a name, but we found a version
       #
       # In many cases (which we don't handle here) the url would look something like
-      # `irrelevant/ACTUAL_PACKAGE_NAME/irrelevant/1.2.3.zip`. In such a case we can't possibly
-      # distinguish the package name from the irrelevant bits. Moreover if we try to match the
-      # package name from the filename, we'd get bogus at best.
+      # `irrelevant/ACTUAL_PACKAGE_NAME/irrelevant/1.2.3.zip`. In such a case we can't possibly distinguish the package
+      # name from the irrelevant bits. Moreover if we try to match the package name from the filename, we'd get bogus at
+      # best.
       unset(${outName} PARENT_SCOPE)
       set(${outVer}
           "${CMAKE_MATCH_1}"
@@ -200,8 +200,8 @@ function(cpm_package_name_and_ver_from_url url outName outVer)
     else()
       # Boldly assume that the file name is the package name.
       #
-      # Yes, something like `irrelevant/ACTUAL_NAME/irrelevant/download.zip` will ruin our day, but
-      # such cases should be quite rare. No popular service does this... we think.
+      # Yes, something like `irrelevant/ACTUAL_NAME/irrelevant/download.zip` will ruin our day, but such cases should be
+      # quite rare. No popular service does this... we think.
       set(${outName}
           "${filename}"
           PARENT_SCOPE)
@@ -233,8 +233,8 @@ function(cpm_find_package NAME VERSION)
   endif()
 endfunction()
 
-# Create a custom FindXXX.cmake module for a CPM package This prevents `find_package(NAME)` from
-# finding the system library
+# Create a custom FindXXX.cmake module for a CPM package This prevents `find_package(NAME)` from finding the system
+# library
 function(cpm_create_module_file Name)
   if(NOT CPM_DONT_UPDATE_MODULE_PATH)
     # erase any previous modules
@@ -298,9 +298,9 @@ function(cpm_check_if_package_already_added CPM_ARGS_NAME CPM_ARGS_VERSION)
   endif()
 endfunction()
 
-# Parse the argument of CPMAddPackage in case a single one was provided and convert it to a list of
-# arguments which can then be parsed idiomatically. For example gh:foo/bar@1.2.3 will be converted
-# to: GITHUB_REPOSITORY;foo/bar;VERSION;1.2.3
+# Parse the argument of CPMAddPackage in case a single one was provided and convert it to a list of arguments which can
+# then be parsed idiomatically. For example gh:foo/bar@1.2.3 will be converted to:
+# GITHUB_REPOSITORY;foo/bar;VERSION;1.2.3
 function(cpm_parse_add_package_single_arg arg outArgs)
   # Look for a scheme
   if("${arg}" MATCHES "^([a-zA-Z]+):(.+)$")
@@ -317,8 +317,7 @@ function(cpm_parse_add_package_single_arg arg outArgs)
     elseif(scheme STREQUAL "bb")
       set(out "BITBUCKET_REPOSITORY;${uri}")
       set(packageType "git")
-      # A CPM-specific scheme was not found. Looks like this is a generic URL so try to determine
-      # type
+      # A CPM-specific scheme was not found. Looks like this is a generic URL so try to determine type
     elseif(arg MATCHES ".git/?(@|#|$)")
       set(out "GIT_REPOSITORY;${arg}")
       set(packageType "git")
@@ -327,9 +326,8 @@ function(cpm_parse_add_package_single_arg arg outArgs)
       set(out "URL;${arg}")
       set(packageType "archive")
 
-      # We could also check for SVN since FetchContent supports it, but SVN is so rare these days.
-      # We just won't bother with the additional complexity it will induce in this function. SVN is
-      # done by multi-arg
+      # We could also check for SVN since FetchContent supports it, but SVN is so rare these days. We just won't bother
+      # with the additional complexity it will induce in this function. SVN is done by multi-arg
     endif()
   else()
     if(arg MATCHES ".git/?(@|#|$)")
@@ -341,8 +339,8 @@ function(cpm_parse_add_package_single_arg arg outArgs)
     endif()
   endif()
 
-  # For all packages we interpret @... as version. Only replace the last occurrence. Thus URIs
-  # containing '@' can be used
+  # For all packages we interpret @... as version. Only replace the last occurrence. Thus URIs containing '@' can be
+  # used
   string(REGEX REPLACE "@([^@]+)$" ";VERSION;\\1" out "${out}")
 
   # Parse the rest according to package type
@@ -352,11 +350,11 @@ function(cpm_parse_add_package_single_arg arg outArgs)
   elseif(packageType STREQUAL "archive")
     # For archives we interpret #... as a URL hash.
     string(REGEX REPLACE "#([^#]+)$" ";URL_HASH;\\1" out "${out}")
-    # We don't try to parse the version if it's not provided explicitly. cpm_get_version_from_url
-    # should do this at a later point
+    # We don't try to parse the version if it's not provided explicitly. cpm_get_version_from_url should do this at a
+    # later point
   else()
-    # We should never get here. This is an assertion and hitting it means there's a problem with the
-    # code above. A packageType was set, but not handled by this if-else.
+    # We should never get here. This is an assertion and hitting it means there's a problem with the code above. A
+    # packageType was set, but not handled by this if-else.
     message(FATAL_ERROR "${CPM_INDENT} Unsupported package type '${packageType}' of '${arg}'")
   endif()
 
@@ -420,9 +418,9 @@ function(cpm_check_git_working_dir_is_clean repoPath gitTag isClean)
 
 endfunction()
 
-# Add PATCH_COMMAND to CPM_ARGS_UNPARSED_ARGUMENTS. This method consumes a list of files in ARGN
-# then generates a `PATCH_COMMAND` appropriate for `ExternalProject_Add()`. This command is appended
-# to the parent scope's `CPM_ARGS_UNPARSED_ARGUMENTS`.
+# Add PATCH_COMMAND to CPM_ARGS_UNPARSED_ARGUMENTS. This method consumes a list of files in ARGN then generates a
+# `PATCH_COMMAND` appropriate for `ExternalProject_Add()`. This command is appended to the parent scope's
+# `CPM_ARGS_UNPARSED_ARGUMENTS`.
 function(cpm_add_patches)
   # Return if no patch files are supplied.
   if(NOT ARGN)
@@ -432,8 +430,8 @@ function(cpm_add_patches)
   # Find the patch program.
   find_program(PATCH_EXECUTABLE patch)
   if(WIN32 AND NOT PATCH_EXECUTABLE)
-    # The Windows git executable is distributed with patch.exe. Find the path to the executable, if
-    # it exists, then search `../usr/bin` and `../../usr/bin` for patch.exe.
+    # The Windows git executable is distributed with patch.exe. Find the path to the executable, if it exists, then
+    # search `../usr/bin` and `../../usr/bin` for patch.exe.
     find_package(Git QUIET)
     if(GIT_EXECUTABLE)
       get_filename_component(extra_search_path ${GIT_EXECUTABLE} DIRECTORY)
@@ -463,8 +461,7 @@ function(cpm_add_patches)
     # Convert to absolute path for use with patch file command.
     get_filename_component(PATCH_FILE "${PATCH_FILE}" ABSOLUTE)
 
-    # The first patch entry must be preceded by "PATCH_COMMAND" while the following items are
-    # preceded by "&&".
+    # The first patch entry must be preceded by "PATCH_COMMAND" while the following items are preceded by "&&".
     if(first_item)
       set(first_item False)
       list(APPEND temp_list "PATCH_COMMAND")
@@ -482,9 +479,9 @@ function(cpm_add_patches)
 
 endfunction()
 
-# method to overwrite internal FetchContent properties, to allow using CPM.cmake to overload
-# FetchContent calls. As these are internal cmake properties, this method should be used carefully
-# and may need modification in future CMake versions. Source:
+# method to overwrite internal FetchContent properties, to allow using CPM.cmake to overload FetchContent calls. As
+# these are internal cmake properties, this method should be used carefully and may need modification in future CMake
+# versions. Source:
 # https://github.com/Kitware/CMake/blob/dc3d0b5a0a7d26d43d6cfeb511e224533b5d188f/Modules/FetchContent.cmake#L1152
 function(cpm_override_fetchcontent contentName)
   cmake_parse_arguments(PARSE_ARGV 1 arg "" "SOURCE_DIR;BINARY_DIR" "")
@@ -603,8 +600,8 @@ function(CPMAddPackage)
     # If a name or version aren't provided, try to infer them from the URL
     list(GET CPM_ARGS_URL 0 firstUrl)
     cpm_package_name_and_ver_from_url(${firstUrl} nameFromUrl verFromUrl)
-    # If we fail to obtain name and version from the first URL, we could try other URLs if any.
-    # However multiple URLs are expected to be quite rare, so for now we won't bother.
+    # If we fail to obtain name and version from the first URL, we could try other URLs if any. However multiple URLs
+    # are expected to be quite rare, so for now we won't bother.
 
     # If the caller provided their own name and version, they trump the inferred ones.
     if(NOT DEFINED CPM_ARGS_NAME)
@@ -711,8 +708,7 @@ function(CPMAddPackage)
   elseif(DEFINED CPM_ARGS_SOURCE_DIR)
     list(APPEND CPM_ARGS_UNPARSED_ARGUMENTS SOURCE_DIR ${CPM_ARGS_SOURCE_DIR})
     if(NOT IS_ABSOLUTE ${CPM_ARGS_SOURCE_DIR})
-      # Expand `CPM_ARGS_SOURCE_DIR` relative path. This is important because EXISTS doesn't work
-      # for relative paths.
+      # Expand `CPM_ARGS_SOURCE_DIR` relative path. This is important because EXISTS doesn't work for relative paths.
       get_filename_component(source_directory ${CPM_ARGS_SOURCE_DIR} REALPATH BASE_DIR ${CMAKE_CURRENT_BINARY_DIR})
     else()
       set(source_directory ${CPM_ARGS_SOURCE_DIR})
@@ -736,8 +732,7 @@ function(CPMAddPackage)
       string(SHA1 origin_hash "${origin_parameters}")
       set(download_directory ${CPM_SOURCE_CACHE}/${lower_case_name}/${origin_hash})
     endif()
-    # Expand `download_directory` relative path. This is important because EXISTS doesn't work for
-    # relative paths.
+    # Expand `download_directory` relative path. This is important because EXISTS doesn't work for relative paths.
     get_filename_component(download_directory ${download_directory} ABSOLUTE)
     list(APPEND CPM_ARGS_UNPARSED_ARGUMENTS SOURCE_DIR ${download_directory})
 
@@ -779,8 +774,8 @@ function(CPMAddPackage)
         "${${CPM_ARGS_NAME}_BINARY_DIR}")
 
     else()
-      # Enable shallow clone when GIT_TAG is not a commit hash. Our guess may not be accurate, but
-      # it should guarantee no commit hash get miss-detected.
+      # Enable shallow clone when GIT_TAG is not a commit hash. Our guess may not be accurate, but it should guarantee
+      # no commit hash get miss-detected.
       if(NOT DEFINED CPM_ARGS_GIT_SHALLOW)
         cpm_is_git_tag_commit_hash("${CPM_ARGS_GIT_TAG}" IS_HASH)
         if(NOT ${IS_HASH})
@@ -809,10 +804,10 @@ function(CPMAddPackage)
   cpm_message(STATUS "${CPM_INDENT} Adding package ${CPM_ARGS_NAME}@${CPM_ARGS_VERSION} (${PACKAGE_INFO})")
 
   if(NOT CPM_SKIP_FETCH)
-    # CMake 3.28 added EXCLUDE, SYSTEM (3.25), and SOURCE_SUBDIR (3.18) to FetchContent_Declare.
-    # Calling FetchContent_MakeAvailable will then internally forward these options to
-    # add_subdirectory. Up until these changes, we had to call FetchContent_Populate and
-    # add_subdirectory separately, which is no longer necessary and has been deprecated as of 3.30.
+    # CMake 3.28 added EXCLUDE, SYSTEM (3.25), and SOURCE_SUBDIR (3.18) to FetchContent_Declare. Calling
+    # FetchContent_MakeAvailable will then internally forward these options to add_subdirectory. Up until these changes,
+    # we had to call FetchContent_Populate and add_subdirectory separately, which is no longer necessary and has been
+    # deprecated as of 3.30.
     set(fetchContentDeclareExtraArgs "")
     if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.28.0")
       if(${CPM_ARGS_EXCLUDE_FROM_ALL})
@@ -880,8 +875,8 @@ macro(cpm_export_variables name)
       PARENT_SCOPE)
 endmacro()
 
-# declares a package, so that any call to CPMAddPackage for the package name will use these
-# arguments instead. Previous declarations will not be overridden.
+# declares a package, so that any call to CPMAddPackage for the package name will use these arguments instead. Previous
+# declarations will not be overridden.
 macro(CPMDeclarePackage Name)
   if(NOT DEFINED "CPM_DECLARATION_${Name}")
     set("CPM_DECLARATION_${Name}" "${ARGN}")
@@ -902,8 +897,7 @@ function(cpm_add_comment_to_package_lock Name)
   endif()
 endfunction()
 
-# includes the package lock file if it exists and creates a target `cpm-update-package-lock` to
-# update it
+# includes the package lock file if it exists and creates a target `cpm-update-package-lock` to update it
 macro(CPMUsePackageLock file)
   if(NOT CPM_DONT_CREATE_PACKAGE_LOCK)
     get_filename_component(CPM_ABSOLUTE_PACKAGE_LOCK_PATH ${file} ABSOLUTE)
@@ -1006,8 +1000,8 @@ function(
   endif()
 endfunction()
 
-# downloads a previously declared package via FetchContent and exports the variables
-# `${PACKAGE}_SOURCE_DIR` and `${PACKAGE}_BINARY_DIR` to the parent scope
+# downloads a previously declared package via FetchContent and exports the variables `${PACKAGE}_SOURCE_DIR` and
+# `${PACKAGE}_BINARY_DIR` to the parent scope
 function(cpm_fetch_package PACKAGE DOWNLOAD_ONLY populated)
   set(${populated}
       FALSE
@@ -1024,9 +1018,8 @@ function(cpm_fetch_package PACKAGE DOWNLOAD_ONLY populated)
   if(NOT ${lower_case_name}_POPULATED)
     if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.28.0")
       if(DOWNLOAD_ONLY)
-        # MakeAvailable will call add_subdirectory internally which is not what we want when
-        # DOWNLOAD_ONLY is set. Populate will only download the dependency without adding it to the
-        # build
+        # MakeAvailable will call add_subdirectory internally which is not what we want when DOWNLOAD_ONLY is set.
+        # Populate will only download the dependency without adding it to the build
         fetchcontent_populate(
           ${PACKAGE}
           SOURCE_DIR "${CPM_FETCHCONTENT_BASE_DIR}/${lower_case_name}-src"

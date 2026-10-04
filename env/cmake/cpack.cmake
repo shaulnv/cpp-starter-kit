@@ -1,12 +1,11 @@
 # CPack configuration: DEB/RPM packages plus a separate debug-symbols package.
 #
-# Include from the top-level CMakeLists.txt after all install() rules. Needs
-# set_project_version() (version.cmake) to have run for the production/nightly flags.
+# Include from the top-level CMakeLists.txt after all install() rules. Needs set_project_version() (version.cmake) to
+# have run for the production/nightly flags.
 #
-# Package version schemes (all sort correctly in dpkg and rpm):
-#   production  X.Y.Z
-#   nightly     X.Y.Z-YYYY.MM.DD.<commit-count>.<sha>
-#   dev         X.Y.Z~<prio>.<pr|branch>.<branch>.git<date>.<sha>   ('~' sorts below X.Y.Z)
+# Package version schemes (all sort correctly in dpkg and rpm): production  X.Y.Z nightly
+# X.Y.Z-YYYY.MM.DD.<commit-count>.<sha> dev         X.Y.Z~<prio>.<pr|branch>.<branch>.git<date>.<sha>   ('~' sorts below
+# X.Y.Z)
 
 function(set_cpack_generator_by_os)
   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -50,8 +49,8 @@ function(configure_git_versioning)
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     OUTPUT_VARIABLE GIT_COMMIT_DATE
     OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
-  # Monotonic across history, so two nightlies on the same day still order. Only
-  # meaningful on a full clone (CI must unshallow first).
+  # Monotonic across history, so two nightlies on the same day still order. Only meaningful on a full clone (CI must
+  # unshallow first).
   execute_process(
     COMMAND ${GIT_EXECUTABLE} rev-list --count HEAD
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -166,8 +165,7 @@ function(get_package_architecture DEB_VAR RPM_VAR)
       PARENT_SCOPE)
 endfunction()
 
-# Distro codename (jammy, bookworm) is part of the DEB file name so packages built for
-# several distros can share dist/.
+# Distro codename (jammy, bookworm) is part of the DEB file name so packages built for several distros can share dist/.
 function(get_debian_codename OUT_VAR)
   set(CODENAME "unstable")
   if(EXISTS "/etc/os-release")
@@ -237,8 +235,8 @@ if(IS_GIT_BUILD)
     set(CPACK_DEBIAN_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION}")
     set(CPACK_RPM_PACKAGE_RELEASE "1")
   elseif(STARTERKIT_IS_NIGHTLY_VERSION)
-    # GIT_COMMIT_DATE is %Y%m%d%H%M. dpkg and rpm both compare '.'-separated numeric runs
-    # numerically, so date + commit count dominate the ordering and the sha only breaks ties.
+    # GIT_COMMIT_DATE is %Y%m%d%H%M. dpkg and rpm both compare '.'-separated numeric runs numerically, so date + commit
+    # count dominate the ordering and the sha only breaks ties.
     string(SUBSTRING "${GIT_COMMIT_DATE}" 0 4 _year)
     string(SUBSTRING "${GIT_COMMIT_DATE}" 4 2 _month)
     string(SUBSTRING "${GIT_COMMIT_DATE}" 6 2 _day)
@@ -257,8 +255,8 @@ endif()
 set(CPACK_DEBIAN_FILE_NAME
     "${CPACK_PACKAGE_NAME}_${CPACK_DEBIAN_PACKAGE_VERSION}_${DEBIAN_CODENAME}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}.deb")
 
-# The automatic %{?dist} suffix depends on the build host's rpm macros; spell it out so the file
-# name is deterministic (name-version-release.dist.arch.rpm).
+# The automatic %{?dist} suffix depends on the build host's rpm macros; spell it out so the file name is deterministic
+# (name-version-release.dist.arch.rpm).
 get_dist_tag(DIST_TAG)
 set(CPACK_RPM_PACKAGE_RELEASE_DIST ON)
 set(CPACK_RPM_PACKAGE_DISTRIBUTION ${DIST_TAG})
@@ -280,8 +278,8 @@ else()
 endif()
 message(STATUS "OS package: ${STARTERKIT_OS_PACKAGE_NAME}")
 
-# Changelog from git history. DEB gets it installed explicitly (more robust than
-# CPACK_DEBIAN_CHANGELOG); RPM reads it via CPACK_RPM_CHANGELOG_FILE.
+# Changelog from git history. DEB gets it installed explicitly (more robust than CPACK_DEBIAN_CHANGELOG); RPM reads it
+# via CPACK_RPM_CHANGELOG_FILE.
 generate_changelog_from_git(CHANGELOG_ENTRIES)
 execute_process(
   COMMAND date -R
@@ -298,8 +296,8 @@ install(
   RENAME changelog.Debian)
 set(CPACK_RPM_CHANGELOG_FILE ${CHANGELOG_FILE})
 
-# Debug symbols ship as a separate package that depends on the main one. Needs a build with
-# debug info (RelWithDebInfo / Debug); a Release build leaves nothing to split out.
+# Debug symbols ship as a separate package that depends on the main one. Needs a build with debug info (RelWithDebInfo /
+# Debug); a Release build leaves nothing to split out.
 set(CPACK_DEBUGINFO_PACKAGE ON)
 set(CPACK_DEBIAN_DEBUGINFO_PACKAGE ON)
 set(CPACK_DEBIAN_DEBUGINFO_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-dbgsym")

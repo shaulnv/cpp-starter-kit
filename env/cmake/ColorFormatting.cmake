@@ -1,19 +1,14 @@
-################################################################################
-#                  Helper file for formatting text with color                  #
-#                                                                              #
-# Supported colors: NORMAL, BLACK, RED, GREEN, YELLOW, BLUE,                   #
-#                   MAGENTA, CYAN, WHITE                                       #
-# Supported style:  BOLD                                                       #
-#                                                                              #
-# (C) 2024 Marc Schöndorf                                                      #
-# Licensed under the zlib License. See LICENSE.md                              #
-################################################################################
+# ######################################################################################################################
+# Helper file for formatting text with color                  # # Supported colors: NORMAL, BLACK, RED, GREEN, YELLOW,
+# BLUE,                   # MAGENTA, CYAN, WHITE                                       # Supported style:  BOLD # # (C)
+# 2024 Marc Schöndorf                                                      # Licensed under the zlib License. See
+# LICENSE.md                              #
+# ######################################################################################################################
 
-# Formats given string with colors and writes the result in
-# the COLOR_FORMATTED_TEXT variable, which can be used in the parent scope.
+# Formats given string with colors and writes the result in the COLOR_FORMATTED_TEXT variable, which can be used in the
+# parent scope.
 #
-# Example:  colorFormatText(COLOR BLUE "My blue text")
-#           colorFormatText(BOLD COLOR RED "My bold red text")
+# Example:  colorFormatText(COLOR BLUE "My blue text") colorFormatText(BOLD COLOR RED "My bold red text")
 #
 # To print: message("${COLOR_FORMATTED_TEXT}")
 #
@@ -46,12 +41,10 @@ function(colorFormatText)
       PARENT_SCOPE)
 endfunction()
 
-# Formats given string with colors and appends the result to
-# the COLOR_FORMATTED_TEXT_COMBINED variable, which can be used
-# in the parent scope.
+# Formats given string with colors and appends the result to the COLOR_FORMATTED_TEXT_COMBINED variable, which can be
+# used in the parent scope.
 #
-# Example:  colorFormatTextAppend(COLOR BLUE "My blue text")
-#           colorFormatTextAppend(BOLD COLOR RED "My bold red text")
+# Example:  colorFormatTextAppend(COLOR BLUE "My blue text") colorFormatTextAppend(BOLD COLOR RED "My bold red text")
 #
 # To print: message("${COLOR_FORMATTED_TEXT_COMBINED}")
 #
@@ -66,8 +59,7 @@ endfunction()
 
 # Directly prints formatted text
 #
-# Example:  messageWithColor(COLOR BLUE "My blue text")
-#           messageWithColor(BOLD COLOR RED "My bold red text")
+# Example:  messageWithColor(COLOR BLUE "My blue text") messageWithColor(BOLD COLOR RED "My bold red text")
 #
 function(messageWithColor)
   colorformattext(${ARGN})

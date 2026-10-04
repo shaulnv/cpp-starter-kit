@@ -1,11 +1,11 @@
-# Binary hardening flags, applied globally so every object, shared library and executable inherits
-# the same protection set. Linux with GCC/Clang, production builds only; local builds stay un-hardened.
-# Post-build enforcement: starterkit_verify_hardening() (env/scripts/verify_hardening.sh).
+# Binary hardening flags, applied globally so every object, shared library and executable inherits the same protection
+# set. Linux with GCC/Clang, production builds only; local builds stay un-hardened. Post-build enforcement:
+# starterkit_verify_hardening() (env/scripts/verify_hardening.sh).
 
 option(STARTERKIT_HARDENING "Enable binary hardening (stack protector, RELRO/BIND_NOW, PIE, FORTIFY)" ON)
 
-# POST_BUILD gate asserting a target's ELF carries the hardening set; no-op when hardening is off
-# or for static archives (not ELF images).
+# POST_BUILD gate asserting a target's ELF carries the hardening set; no-op when hardening is off or for static archives
+# (not ELF images).
 function(starterkit_verify_hardening target)
   get_target_property(target_type ${target} TYPE)
   if(NOT STARTERKIT_HARDENING OR target_type STREQUAL "STATIC_LIBRARY")

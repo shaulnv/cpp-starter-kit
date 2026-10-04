@@ -22,9 +22,8 @@ option(CMAKE_EXPORT_COMPILE_COMMANDS "Export compile commands" ON)
 option(PRODUCTION_BUILD "Production build (all optimizations enabled)" ON)
 option(STARTERKIT_STATIC_CXX_RUNTIME "Link the C++ runtime statically into the executables (GCC)" OFF)
 
-# C++ standard
-#   keep in sync with 'compiler.cppstd=' at env/profiles/base.profile
-#   this is set also in here so a CMake consumer of this project will get it automatically
+# C++ standard keep in sync with 'compiler.cppstd=' at env/profiles/base.profile this is set also in here so a CMake
+# consumer of this project will get it automatically
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -47,13 +46,10 @@ else()
   message(STATUS "LTO disabled: ${ipo_unsupported_reason}")
 endif()
 
-# RPATH:
-# Set up runtime path (rpath) handling for shared libraries
-# rpath specifies directories to search for dependent shared libraries (.so files) at runtime
-# '$ORIGIN' ensures the rpath is set relative to the binary's location
-# We set it to standard locations:
-#   executables can be anywhere, but standard install is in bin/
-#   shared libraries are in lib/, ../lib/ or right by the executable
+# RPATH: Set up runtime path (rpath) handling for shared libraries rpath specifies directories to search for dependent
+# shared libraries (.so files) at runtime '$ORIGIN' ensures the rpath is set relative to the binary's location We set it
+# to standard locations: executables can be anywhere, but standard install is in bin/ shared libraries are in lib/,
+# ../lib/ or right by the executable
 set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/lib $ORIGIN/../lib)
 set(CMAKE_BUILD_RPATH $ORIGIN $ORIGIN/lib $ORIGIN/../lib)
 
@@ -66,19 +62,14 @@ include(env/cmake/tools.cmake)
 include(env/cmake/hardening.cmake)
 include(env/cmake/reduced_debug.cmake)
 
-# Prefer using conanfile.py('requires' clause) for import of 3rd party projects
-# If you only have a CMake based dependency, use CPM to import it
-# See: https://github.com/cpm-cmake/CPM.cmake for usage
-# Example:
-# CPMAddPackage(
-#   NAME ibis
-#   GITHUB_REPOSITORY mellanox/ibis_tools
-#   GIT_TAG release.v16.0.0
-# )
+# Prefer using conanfile.py('requires' clause) for import of 3rd party projects If you only have a CMake based
+# dependency, use CPM to import it See: https://github.com/cpm-cmake/CPM.cmake for usage Example: CPMAddPackage( NAME
+# ibis GITHUB_REPOSITORY mellanox/ibis_tools GIT_TAG release.v16.0.0 )
 
 # Global compiler flags; the latest flag takes precedence
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-  # -Wno-missing-field-initializers: it also fires on designated initializers, https://github.com/llvm/llvm-project/issues/68933
+  # -Wno-missing-field-initializers: it also fires on designated initializers,
+  # https://github.com/llvm/llvm-project/issues/68933
   add_compile_options(-Wall -Wpedantic -Wextra -Werror -Wno-missing-field-initializers)
   # Tolerate GCC-only groups in '#pragma GCC diagnostic' blocks that clang doesn't recognize
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
