@@ -10,7 +10,7 @@
 #include "starterkit/version.h"
 
 namespace {
-  auto main_impl(int argc, char **argv) -> int {
+  auto main_impl(int argc, char** argv) -> int {
     cxxopts::Options options(*argv, "A program to welcome the world!");
 
     auto name = std::string{"bob"};
@@ -44,13 +44,13 @@ namespace {
   }
 }  // namespace
 
-auto main(int argc, char **argv) -> int {
+auto main(int argc, char** argv) -> int {
   try {
     return main_impl(argc, argv);
-  } catch (cxxopts::exceptions::exception &e) {
+  } catch (cxxopts::exceptions::exception& e) {
     fmt::println("ERROR: Command line: {}", e.what());
     return 2;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     fmt::println("ERROR: {}", e.what());
     return 1;
   }

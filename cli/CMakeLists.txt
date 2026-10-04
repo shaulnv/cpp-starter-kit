@@ -1,8 +1,11 @@
-find_package(fmt REQUIRED)
 find_package(cxxopts REQUIRED)
 
 add_executable(starterkit-cli)
 target_sources(starterkit-cli PRIVATE src/main-cli.cpp)
 set_target_properties(starterkit-cli PROPERTIES OUTPUT_NAME "starterkit")
 target_link_libraries(starterkit-cli PRIVATE starterkit::starterkit cxxopts::cxxopts fmt::fmt)
-install(TARGETS starterkit-cli)
+if(STARTERKIT_STATIC_CXX_RUNTIME AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  target_link_options(starterkit-cli PRIVATE -static-libgcc -static-libstdc++)
+endif()
+starterkit_verify_hardening(starterkit-cli)
+install(TARGETS starterkit-cli RUNTIME DESTINATION bin COMPONENT Runtime)

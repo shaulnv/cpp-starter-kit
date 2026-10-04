@@ -13,6 +13,15 @@ Checks: "*,
         -readability-avoid-const-params-in-decls,
         -cppcoreguidelines-non-private-member-variables-in-classes,
         -misc-non-private-member-variables-in-classes,
+        -readability-named-parameter,
+        -hicpp-named-parameter,
+        -cppcoreguidelines-pro-type-reinterpret-cast,
+        -cppcoreguidelines-macro-usage,
+        -bugprone-easily-swappable-parameters,
+        -performance-enum-size,
+        -readability-implicit-bool-conversion,
+        -hicpp-vararg,
+        -cppcoreguidelines-pro-type-vararg,
 "
 
 WarningsAsErrors: '*'
@@ -20,8 +29,8 @@ HeaderFilterRegex: ''
 FormatStyle: file
 
 CheckOptions:
-  - { key: readability-identifier-length.IgnoredVariableNames,   value: 'x|y|z|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z' }
-  - { key: readability-identifier-length.IgnoredParameterNames,  value: 'x|y|z|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z' }
+  - { key: readability-identifier-length.IgnoredVariableNames,   value: 'a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|_' }
+  - { key: readability-identifier-length.IgnoredParameterNames,  value: 'a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|_' }
   - { key: readability-identifier-naming.NamespaceCase,          value: lower_case }
   - { key: readability-identifier-naming.ClassCase,              value: CamelCase  }
   - { key: readability-identifier-naming.StructCase,             value: CamelCase  }
@@ -37,3 +46,8 @@ CheckOptions:
   - { key: readability-identifier-naming.GlobalConstantCase,     value: lower_case }
   - { key: readability-identifier-naming.MemberConstantCase,     value: lower_case }
   - { key: readability-identifier-naming.StaticConstantCase,     value: lower_case }
+  - { key: readability-identifier-naming.TypeTemplateParameterCase,  value: CamelCase  }
+  - { key: readability-identifier-naming.ValueTemplateParameterCase, value: lower_case }
+  - { key: readability-function-cognitive-complexity.IgnoreMacros,   value: true       }
+  - { key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor, value: true }
+  - { key: hicpp-special-member-functions.AllowSoleDefaultDtor,      value: true       }

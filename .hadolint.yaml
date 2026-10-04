@@ -1,0 +1,4 @@
+---
+ignored:
+  # Version-pinning base OS packages is impractical for dev images
+  - DL3008  # apt-get: pin versions

@@ -5,3 +5,10 @@ build/
 Testing/
 out/
 CMakeUserPresets.json
+.idea/
+site/
+dist/
+.DS_Store
+__pycache__/
+*.pyc
+*.log
