@@ -3,6 +3,15 @@
 set -eE
 set -o pipefail
 
+# Portable in-place sed (GNU sed on Linux, BSD sed on macOS)
+function sed_inplace() {
+  if sed --version >/dev/null 2>&1; then
+    sed -i "$@"
+  else
+    sed -i '' "$@"
+  fi
+}
+
 function rename_files_and_folders() {
   # Set the words to be replaced
   local old=$1
@@ -11,7 +20,9 @@ function rename_files_and_folders() {
 
   # Step 1: Replace text inside all files (case-sensitive, excluding specified folders)
   echo "Replacing text inside files..."
-  find . -type f ! -path "*/$exclude_pattern/*" -exec sed -i "s/${old}/${new}/g" {} +
+  while IFS= read -r -d '' file; do
+    LC_ALL=C sed_inplace "s/${old}/${new}/g" "$file"
+  done < <(find . -type f ! -path "*/$exclude_pattern/*" -print0)
 
   # Step 2: Rename folders (case-sensitive, excluding specified folders)
   echo "Renaming folders..."
@@ -32,7 +43,7 @@ function rename_files_and_folders() {
 
 function fix_project_name() {
   local project_name=$1
-  local project_name_upper=${project_name^^} # this folder name uppercase
+  local project_name_upper=$(echo "$project_name" | tr '[:lower:]' '[:upper:]') # this folder name uppercase
 
   rename_files_and_folders starterkit $project_name
   rename_files_and_folders STARTERKIT $project_name_upper
@@ -55,7 +66,7 @@ function fix_misc() {
 
   # Fix the project's URL in the CMakeLists.txt file
   #   '__HELP_ME__' is used to help sed deal with the quotes of the URL
-  sed -i "s|HOMEPAGE_URL .*|HOMEPAGE_URL __HELP_ME__${project_url}|; s/__HELP_ME__//" CMakeLists.txt
+  sed_inplace "s|HOMEPAGE_URL .*|HOMEPAGE_URL __HELP_ME__${project_url}|; s/__HELP_ME__//" CMakeLists.txt
 }
 
 function init_project() {
