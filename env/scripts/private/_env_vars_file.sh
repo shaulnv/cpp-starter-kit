@@ -26,7 +26,10 @@ update_env_vars_file() {
 
 # Function to load environment variables from .env file
 load_env_vars() {
-  source $root_dir/.env >/dev/null 2>&1 || true
+  # Guard with -f: on macOS bash 3.2 a failed `source` aborts the shell even with `|| true`
+  if [[ -f $root_dir/.env ]]; then
+    source "$root_dir/.env" >/dev/null 2>&1 || true
+  fi
 }
 
 load_env_vars

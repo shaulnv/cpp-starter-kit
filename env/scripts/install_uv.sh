@@ -79,8 +79,9 @@ _ensure_ca_certs() {
 }
 
 install-uv() {
-  if [[ -z $PKG_MGR ]]; then
-    echo -e "${red}ERROR: Unsupported system. This script requires apt (Ubuntu/Debian) or dnf (RHEL/Amazon Linux).${nc}"
+  # A package manager is only needed to install curl; uv itself installs via curl on any OS (incl. macOS)
+  if [[ -z $PKG_MGR ]] && ! command -v curl &>/dev/null; then
+    echo -e "${red}ERROR: 'curl' is not installed and no supported package manager (apt/dnf) was found.${nc}"
     return 1
   fi
 

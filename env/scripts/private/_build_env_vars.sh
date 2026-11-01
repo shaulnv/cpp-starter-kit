@@ -246,6 +246,15 @@ function _create_env_vars_file() {
   done
 }
 
+# Create/replace a symlink to $1 named $2, relative to the link's folder ($1 must be under it).
+# Replaces `ln -srfn`, since BSD/macOS `ln` has no `-r`.
+function _link_relative() {
+  local target=$1
+  local link=$2
+
+  ln -sfn "${target#"$(dirname "$link")"/}" "$link"
+}
+
 function _create_build_folder() {
   local build_folder=$1
   local build_folder_full=$2
@@ -256,11 +265,11 @@ function _create_build_folder() {
   mkdir -p $build_folder_full
 
   # CMake's standard path to the build folder: build/<Debug|Release|...> -> <profile>/<Debug|Release|...>
-  ln -srfn $build_folder_full $build_folder
+  _link_relative $build_folder_full $build_folder
   # A static, known location of the current build folder for scripts
-  ln -srfn $build_folder $root_dir/build/current
+  _link_relative $build_folder $root_dir/build/current
   # clangd expects compile_commands.json in the root build folder
-  ln -srf $build_folder/compile_commands.json $compile_commands_json
+  _link_relative $build_folder/compile_commands.json $compile_commands_json
 }
 
 # start

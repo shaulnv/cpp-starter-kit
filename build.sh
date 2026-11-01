@@ -183,7 +183,7 @@ if [[ $first_time_build == "true" ]]; then
   # 1. Install dependencies
   run_conan "$profile" "$build_type" || exit 1
   # 2. Configure CMake with the preset Conan generated
-  preset="conan-${build_type,,}"
+  preset="conan-$(echo "$build_type" | tr "[:upper:]" "[:lower:]")"
   cmake --preset "${preset}" "${cmake_options[@]}" || exit 1
 elif [[ ${#cmake_options[@]} -gt 0 ]]; then
   # Subsequent builds reconfigure only when an option changed
